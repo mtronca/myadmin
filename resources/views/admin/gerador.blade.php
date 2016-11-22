@@ -44,7 +44,7 @@
                       <td><?php echo $modulo->title; ?></a></td>
                       <td><?php echo $modulo->rota; ?></a></td>
                       <td><a href="/admin/gerador/edit/<?php echo $modulo->id; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
-                          <a href="/admin/gerador/delete/<?php echo $modulo->id; ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                          <a href="/admin/gerador/delete/<?php echo $modulo->id; ?>" class="btn btn-danger deletar"><i class="fa fa-trash"></i></a>
                       </td>
                     </tr>
                 <?php endforeach ?>

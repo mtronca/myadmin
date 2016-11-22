@@ -13,6 +13,11 @@ class TipoModulo extends Model
 		return DB::table('sis_tipos_modulo')->insert([
 			[
 				'nome' => $input['nome'],
+				'controller_admin' => $input['controller_admin'],
+				'model' => $input['model'],
+				'view_admin_index' => $input['view_admin_index'],
+				'view_admin_form' => $input['view_admin_form'],
+				'rotas' => $input['rotas'],
 			]
 		]);
 	}
@@ -21,6 +26,11 @@ class TipoModulo extends Model
 		return DB::table('sis_tipos_modulo')->where('id', $id)
 		->update([
 			'nome' => $input['nome'],
+			'controller_admin' => $input['controller_admin'],
+			'model' => $input['model'],
+			'view_admin_index' => $input['view_admin_index'],
+			'view_admin_form' => $input['view_admin_form'],
+			'rotas' => $input['rotas'],
 		]);
 	}
 

@@ -21,6 +21,7 @@ class ComposerServiceProvider extends ServiceProvider
         });
         \View::composer('layouts/app', function($view){
             $data = array();
+            $data['modulos'] = \App\Gerador::get();
             $view->with('data', $data);
         });
 

@@ -34,10 +34,10 @@
 										<input type="hidden" name="id" value="<?php echo $modulo->id; ?>"/>
 									<?php } ?>
 									<div class="form-group">
-										<label for="name" class="col-md-3 control-label">Título</label>
+										<label for="label" class="col-md-3 control-label">Label</label>
 
 										<div class="col-md-7">
-											<input id="title" type="text" class="form-control" value="<?php echo (isset($modulo)) ? $modulo->title : ''; ?>" name="title" />
+											<input id="label" type="text" class="form-control" value="<?php echo (isset($modulo)) ? $modulo->label : ''; ?>" name="label" />
 										</div>
 									</div>
 									<div class="form-group">
@@ -53,11 +53,42 @@
 										</div>
 									</div>
 									<div class="form-group">
+										<label for="item_modulo" class="col-md-3 control-label">Item do Módulo</label>
+										<div class="col-md-7">
+											<input id="item_modulo" type="text" class="form-control" value="<?php echo (isset($modulo)) ? $modulo->item_modulo : ''; ?>" name="item_modulo" />
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label for="items_modulo" class="col-md-3 control-label">Itens do Módulo</label>
+										<div class="col-md-7">
+											<input id="items_modulo" type="text" class="form-control" value="<?php echo (isset($modulo)) ? $modulo->items_modulo : ''; ?>" name="items_modulo" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="nome_tabela" class="col-md-3 control-label">Nome da tabela</label>
+										<div class="col-md-7">
+											<input id="nome_tabela" type="text" class="form-control" value="<?php echo (isset($modulo)) ? $modulo->nome_tabela : ''; ?>" name="nome_tabela" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="imagem" class="col-md-3 control-label">Imagem</label>
+										<div class="col-md-7">
+											<input id="imagem" type="checkbox" value="1" <?php echo (isset($modulo) && $modulo->imagem) ? 'checked' : ''; ?> name="imagem" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="galeria" class="col-md-3 control-label">Galeria</label>
+										<div class="col-md-7">
+											<input id="galeria" type="checkbox" value="1" <?php echo (isset($modulo) && $modulo->galeria) ? 'checked' : ''; ?> name="galeria" />
+										</div>
+									</div>
+									<div class="form-group">
 										<label for="name" class="col-md-3 control-label">Tipo</label>
 										<div class="col-md-7">
-											<select name="id_tipo" id="id_tipo">
+											<select name="id_tipo_modulo" id="id_tipo_modulo" class="form-control">
 												<?php foreach ($tipos as $tipo): ?>
-													<?php if(isset($modulo) && $tipo->id == $modulo->id_tipo){ $selected = 'selected'; }else{ $selected = ''; } ?>
+													<?php if(isset($modulo) && $tipo->id == $modulo->id_tipo_modulo){ $selected = 'selected'; }else{ $selected = ''; } ?>
 													<option <?php echo $selected; ?> value="<?php echo $tipo->id; ?>"><?php echo $tipo->nome; ?></option>
 												<?php endforeach ?>
 											</select>

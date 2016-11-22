@@ -42,8 +42,9 @@
 					</span>
 				</a>
 				<ul class="treeview-menu">
-
-					<li ><a href="{{ url('admin/example') }}"><i class="fa fa-circle-o"></i>Exemplo</a></li>
+					<?php foreach($data['modulos'] as $modulo){ ?>
+						<li ><a href="{{ url('admin/'.$modulo->rota) }}"><i class="fa fa-circle-o"></i><?php echo $modulo->label; ?></a></li>
+					<?php } ?>
 				</ul>
 			</li>
 			<li class="treeview">

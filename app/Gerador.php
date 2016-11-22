@@ -10,23 +10,41 @@ class Gerador extends Model
 	protected $table = 'sis_modulos';
 
 	public static function criar($input){
-		return DB::table('sis_modulos')->insert([
+		$imagem = (isset($input['imagem'])) ? $input['imagem'] : 0;
+		$galeria = (isset($input['galeria'])) ? $input['galeria'] : 0;
+
+		DB::table('sis_modulos')->insert([
 			[
-				'title' => $input['title'],
+				'label' => $input['label'],
 				'nome' => $input['nome'],
 				'rota' => $input['rota'],
-				'id_tipo' => $input['id_tipo']
+				'item_modulo' => $input['item_modulo'],
+				'items_modulo' => $input['items_modulo'],
+				'nome_tabela' => $input['nome_tabela'],
+				'imagem' => $imagem,
+				'galeria' => $galeria,
+				'id_tipo_modulo' => $input['id_tipo_modulo']
 			]
 		]);
+		$id_modulo = DB::getPdo()->lastInsertId();
+
+		return ($id_modulo) ? $id_modulo : null;
 	}
 
 	public static function editar($input, $id){
+		$imagem = (isset($input['imagem'])) ? $input['imagem'] : 0;
+		$galeria = (isset($input['galeria'])) ? $input['galeria'] : 0;
 		return DB::table('sis_modulos')->where('id', $id)
 		->update([
-			'title' => $input['title'],
+			'label' => $input['label'],
 			'nome' => $input['nome'],
 			'rota' => $input['rota'],
-			'id_tipo' => $input['id_tipo']
+			'item_modulo' => $input['item_modulo'],
+			'items_modulo' => $input['items_modulo'],
+			'nome_tabela' => $input['nome_tabela'],
+			'imagem' => $imagem,
+			'galeria' => $galeria,
+			'id_tipo_modulo' => $input['id_tipo_modulo']
 		]);
 	}
 
