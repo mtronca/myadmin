@@ -16,8 +16,9 @@ class CampoModulo extends Model
 				'nome' => $input['nome'],
 				'valor_padrao' => $input['valor_padrao'],
 				'listagem' => $input['listagem'],
+				'required' => $input['required'],
 				'label' => $input['label'],
-				'id_tipo_campo' => $input['id_tipo_campo'],
+				'tipo_campo' => $input['tipo_campo'],
 				'id_modulo' => $input['id_modulo'],
 			]
 		]);
@@ -30,8 +31,15 @@ class CampoModulo extends Model
 			'valor_padrao' => $input['valor_padrao'],
 			'listagem' => $input['listagem'],
 			'label' => $input['label'],
-			'id_tipo_campo' => $input['id_tipo_campo'],
+			'required' => $input['required'],
+			'tipo_campo' => $input['tipo_campo'],
 			'id_modulo' => $input['id_modulo'],
 		]);
+	}
+
+	public static function deletar($id){
+		return DB::table('sis_campo_modulo')
+				->where('id', $id)
+				->delete();
 	}
 }

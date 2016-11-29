@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use DB;
 use App\Http\Requests;
 
 class AdminGeradorController extends Controller
@@ -26,6 +26,7 @@ class AdminGeradorController extends Controller
 	public function edit($id){
 		$data['modulo'] = \App\Gerador::find($id);
 		$data['tipos'] = \App\TipoModulo::get();
+		$data['campos'] = \App\CampoModulo::where('id_modulo', $data['modulo']->id)->get();
 		return view('admin/form-gerador',$data);
 	}
 
@@ -33,10 +34,16 @@ class AdminGeradorController extends Controller
 		try{
 			$post = $request->input();
 			if($request->input('id')){
+				$modulo = \App\Gerador::find($request->input('id'));
 				\App\Gerador::editar($post, $request->input('id'));
+
+				$this->updateTable($request->input(), $modulo);
 			}else{
 				$id_modulo = \App\Gerador::criar($post);
-				$this->generateFiles(\App\Gerador::find($id_modulo));
+				$modulo = \App\Gerador::find($id_modulo);
+				$this->createTable($request->input(), $modulo);
+				$this->generateFiles($modulo);
+				
 			}
 			\Session::flash('type', 'success');
             \Session::flash('message', "Alteracoes salvas com sucesso!");
@@ -52,7 +59,23 @@ class AdminGeradorController extends Controller
 
 	public function delete($id){
 		try{
+			$modulo = \App\Gerador::find($id);
+
 			\App\Gerador::deletar($id);
+
+			unlink('../app/Http/Controllers/Admin'.$modulo->nome.'Controller.php');
+			unlink('../app/Http/Controllers/'.$modulo->nome.'Controller.php');
+			unlink('../app/'.$modulo->nome.'.php');
+			unlink('../resources/views/admin/'.$modulo->rota.'.blade.php');
+			if($modulo->id_tipo_modulo == 1){
+				unlink('../resources/views/admin/form-'.$modulo->rota.'.blade.php');
+			}
+			unlink('../resources/views/admin/form-'.$modulo->rota.'-imagem.blade.php');
+			unlink('../resources/views/'.$modulo->rota.'.blade.php');
+
+			\App\CampoModulo::where('id_modulo',$modulo->id)->delete();
+			DB::statement('DROP TABLE '.$modulo->nome_tabela);
+			DB::statement('DROP TABLE '.$modulo->nome_tabela.'_imagens');
 
 			\Session::flash('type', 'success');
             \Session::flash('message', "Registro removido com sucesso!");
@@ -72,48 +95,175 @@ class AdminGeradorController extends Controller
 		$by = array($modulo->nome,$modulo->id,$modulo->rota,$modulo->item_modulo,$modulo->items_modulo,$modulo->nome_tabela,$modulo->label);
 
 		/* Gera o Controller */
-		$path = "../resources/views/templates_tipo_modulo/".$tipo_modulo->controller_admin;
-		$myfile = fopen($path, "r") or die("Unable to open file!");
-		$text = str_replace($replaces,$by,fread($myfile,filesize($path)));
-		fclose($myfile);
+		$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/".$tipo_modulo->controller_admin));
 		file_put_contents('../app/Http/Controllers/Admin'.$modulo->nome.'Controller.php',$text);
 
+		/* Gera o Controller do Site */
+		$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/controller_basico.php"));
+		file_put_contents('../app/Http/Controllers/'.$modulo->nome.'Controller.php',$text);
+
 		/* Gera o Model */
-		$path = "../resources/views/templates_tipo_modulo/".$tipo_modulo->model;
-		$myfile = fopen($path, "r") or die("Unable to open file!");
-		$text = str_replace($replaces,$by,fread($myfile,filesize($path)));
-		fclose($myfile);
+		$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/".$tipo_modulo->model));
 		file_put_contents('../app/'.$modulo->nome.'.php',$text);
 
 		/* Gera a View Index */
-		$path = "../resources/views/templates_tipo_modulo/".$tipo_modulo->view_admin_index;
-		$myfile = fopen($path, "r") or die("Unable to open file!");
-		$text = str_replace($replaces,$by,fread($myfile,filesize($path)));
-		fclose($myfile);
+		$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/".$tipo_modulo->view_admin_index));
 		file_put_contents('../resources/views/admin/'.$modulo->rota.'.blade.php',$text);
 
-		/* Gera a View Form */
-		$path = "../resources/views/templates_tipo_modulo/".$tipo_modulo->view_admin_form;
-		$myfile = fopen($path, "r") or die("Unable to open file!");
-		$text = str_replace($replaces,$by,fread($myfile,filesize($path)));
-		fclose($myfile);
-		file_put_contents('../resources/views/admin/form-'.$modulo->rota.'.blade.php',$text);
+		if($tipo_modulo->id == 1){ // Com Detalhe
+			/* Gera a View Form */
+			$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/".$tipo_modulo->view_admin_form));
+			file_put_contents('../resources/views/admin/form-'.$modulo->rota.'.blade.php',$text);
+		}
+		
 
 		/* Gera a view Galeria */
-		$path = "../resources/views/templates_tipo_modulo/view_form_galeria.php";
-		$myfile = fopen($path, "r") or die("Unable to open file!");
-		$text = str_replace($replaces,$by,fread($myfile,filesize($path)));
-		fclose($myfile);
-		file_put_contents('../resources/views/admin/form-'.$modulo->rota.'-imagens.blade.php',$text);
+		$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/view_form_galeria.php"));
+		file_put_contents('../resources/views/admin/form-'.$modulo->rota.'-imagem.blade.php',$text);
+
+		/* Gera a view index do site */
+		file_put_contents('../resources/views/'.$modulo->rota.'.blade.php','');
 
 		/* Gera as rotas */
-		$path = "../resources/views/templates_tipo_modulo/".$tipo_modulo->rotas;
-		$myfile = fopen($path, "r") or die("Unable to open file!");
-		$text = str_replace($replaces,$by,fread($myfile,filesize($path)));
-		fclose($myfile);
+		$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/".$tipo_modulo->rotas));
 		file_put_contents('../app/Http/routes.php',$text, FILE_APPEND);
 
 		return true;
+	}
+
+	private function createTable($input, $modulo){
+		$sqlColumns = '( id INT NOT NULL AUTO_INCREMENT, thumbnail_principal VARCHAR(255) DEFAULT NULL';
+		if($modulo->id_tipo_modulo == 1){
+			$sqlColumns .= ', meta_keywords TEXT DEFAULT NULL, meta_descricao TEXT DEFAULT NULL';
+		}
+		foreach ($input['campo-nome'] as $key => $nome_campo) {
+			$sqlColumns .= ', ';
+			switch ($input['campo-tipo-campo'][$key]) {
+				case 'I':
+					$tipo = 'VARCHAR';
+					$valor_tipo = '(255)';
+					break;
+				case 'T':
+					$tipo = 'TEXT';
+					$valor_tipo = '';
+					break;
+				case 'D':
+					$tipo = 'DATE';
+					$valor_tipo = '';
+					break;
+				case 'DT':
+					$tipo = 'DATETIME';
+					$valor_tipo = '';
+					break;
+			}
+			$sqlColumns .= $nome_campo.' '.$tipo.' '.$valor_tipo.' DEFAULT NULL';
+
+			$campoInfo = array(
+				'nome' => $nome_campo,
+				'valor_padrao' => $input['campo-valor-padrao'][$key],
+				'listagem' => $input['campo-listagem'][$key],
+				'required' => $input['campo-required'][$key],
+				'label' => $input['campo-label'][$key],
+				'required' => $input['campo-required'][$key],
+				'tipo_campo' => $input['campo-tipo-campo'][$key],
+				'id_modulo' => $modulo->id,
+			);
+			\App\CampoModulo::criar($campoInfo);
+		}
+		$sqlColumns .= ', PRIMARY KEY (id))';
+		DB::statement('CREATE TABLE '.$input['nome_tabela'].' '.$sqlColumns);
+
+		DB::statement('CREATE TABLE '.$input['nome_tabela'].'_imagens (id INT NOT NULL AUTO_INCREMENT, thumbnail_principal VARCHAR (255) DEFAULT NULL, id_'.$modulo->item_modulo.' INT(11) NOT NULL, PRIMARY KEY (id))');
+
+		if($modulo->id_tipo_modulo == 2){
+			DB::statement('INSERT INTO '.$input['nome_tabela'].' (id) VALUES (1)');
+		}
+
+		return true;
+	}
+
+	private function updateTable($input, $modulo){
+		if(isset($input['edit-campo-nome'])){
+			foreach ($input['edit-campo-nome'] as $key => $nome_campo) {
+				if($input['old-campo-nome'][$key] != $nome_campo){
+					$new_name = $nome_campo;
+				}else{
+					$new_name = '';
+				}
+				switch ($input['edit-campo-tipo-campo'][$key]) {
+					case 'I':
+						$tipo = 'VARCHAR';
+						$valor_tipo = '(255)';
+						break;
+					case 'T':
+						$tipo = 'TEXT';
+						$valor_tipo = '';
+						break;
+					case 'D':
+						$tipo = 'DATE';
+						$valor_tipo = '';
+						break;
+					case 'DT':
+						$tipo = 'DATETIME';
+						$valor_tipo = '';
+						break;
+				}
+				DB::statement('ALTER TABLE '.$modulo->nome_tabela.' CHANGE COLUMN '.$input['old-campo-nome'][$key].' '.$nome_campo.' '.$tipo.' '.$valor_tipo.' DEFAULT NULL');
+
+				$campoObject = \App\CampoModulo::where('nome', $input['old-campo-nome'][$key])->first();
+
+				$campoInfo = array(
+					'nome' => $nome_campo,
+					'valor_padrao' => $input['edit-campo-valor-padrao'][$key],
+					'listagem' => $input['edit-campo-listagem'][$key],
+					'required' => $input['edit-campo-required'][$key],
+					'label' => $input['edit-campo-label'][$key],
+					'tipo_campo' => $input['edit-campo-tipo-campo'][$key],
+					'id_modulo' => $modulo->id,
+				);
+				\App\CampoModulo::editar($campoInfo, $campoObject->id);
+			}
+
+		}
+
+		if(isset($input['campo-nome'])){
+			foreach ($input['campo-nome'] as $key => $nome_campo) {
+				switch ($input['campo-tipo-campo'][$key]) {
+					case 'I':
+						$tipo = 'VARCHAR';
+						$valor_tipo = '(255)';
+						break;
+					case 'T':
+						$tipo = 'TEXT';
+						$valor_tipo = '';
+						break;
+					case 'D':
+						$tipo = 'DATE';
+						$valor_tipo = '';
+						break;
+					case 'DT':
+						$tipo = 'DATETIME';
+						$valor_tipo = '';
+						break;
+				}
+				DB::statement('ALTER TABLE '.$modulo->nome_tabela.' ADD '.$nome_campo.' '.$tipo.' '.$valor_tipo.' DEFAULT NULL');
+				
+				$campoInfo = array(
+					'nome' => $nome_campo,
+					'valor_padrao' => $input['campo-valor-padrao'][$key],
+					'listagem' => $input['campo-listagem'][$key],
+					'required' => $input['campo-required'][$key],
+					'label' => $input['campo-label'][$key],
+					'tipo_campo' => $input['campo-tipo-campo'][$key],
+					'id_modulo' => $modulo->id,
+				);
+				\App\CampoModulo::criar($campoInfo);
+			}
+		}
+		
+
+		return true;
+		
 	}
 
 }

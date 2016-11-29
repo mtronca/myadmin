@@ -35,7 +35,7 @@ Route::get('admin/gerador/add', 'AdminGeradorController@add');
 Route::get('admin/gerador/edit/{id}', 'AdminGeradorController@edit');
 Route::get('admin/gerador/delete/{id}', 'AdminGeradorController@delete');
 Route::post('admin/gerador/save', 'AdminGeradorController@save');
-
+Route::post('admin/campo-modulo/delete/{id}', 'AdminCampoModuloController@delete');
 
 // ==============================
 // Tipo Módulo routes
@@ -103,4 +103,5 @@ Route::get('/', 'HomeController@index');
 Route::get('telegram/get-updates','TelegramController@getUpdates');
 Route::post('telegram/send-message','TelegramController@postSendMessage');
 //Route::get('send-message','TelegramController@getSendMessage');
+
 

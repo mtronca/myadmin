@@ -32,7 +32,6 @@
 							<?php if(isset($<ITEM_MODULO>) && $modulo->galeria){ ?>
 								<li><a data-toggle="pill" href="#imagens-tab">Galeria</a></li>
 							<?php } ?>
-							<li><a data-toggle="pill" href="#seo-tab">SEO</a></li>
 						</ul>
 						<div class="spacer"></div>
 						<form id="mainForm" class="form-horizontal" role="form" method="POST" action="{{ url('/admin/<ROTA_MODULO>/save') }}">
@@ -44,59 +43,29 @@
 										<input type="hidden" name="thumbnail_principal" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->thumbnail_principal : ''; ?>">
 									<?php } ?>
 									<?php if(isset($<ITEM_MODULO>)){ ?>
-										<input type="hidden" name="id" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->id : ''; ?>"/>
+										<input type="hidden" name="id" value="<?php echo $<ITEM_MODULO>->id; ?>"/>
 									<?php } ?>
 									<?php foreach($fields as $field){ ?>
 										<?php $campo = $field->nome; ?>
 										<div class="form-group">
-											<label for="<?php echo $field->nome; ?>" class="col-md-3 control-label"><?php echo $field->label; ?></label>
+											<label for="<?php echo $field->nome; ?>" class="col-md-3 control-label"><?php echo $field->label; ?> <?php echo ($field->required) ? '*' : ''; ?></label>
 
 											<div class="col-md-7">
 												<?php if($field->tipo_campo == 'I'){ ?>
-													<input id="<?php echo $field->nome; ?>" type="text" class="form-control" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : ''; ?>" name="<?php echo $field->nome; ?>" />
+													<input id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> type="text" class="form-control" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : $field->valor_padrao; ?>" name="<?php echo $field->nome; ?>" />
 												<?php } ?>
 												<?php if($field->tipo_campo == 'T'){ ?>
-													<textarea id="<?php echo $field->nome; ?>" class="form-control tinymce" name="<?php echo $field->nome; ?>"><?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : ''; ?></textarea>
+													<textarea id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> class="form-control tinymce" name="<?php echo $field->nome; ?>"><?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : $field->valor_padrao; ?></textarea>
 												<?php } ?>
 												<?php if($field->tipo_campo == 'D'){ ?>
-													<input id="<?php echo $field->nome; ?>" type="date" class="form-control" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : ''; ?>" name="<?php echo $field->nome; ?>" />
+													<input id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> type="date" class="form-control" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : $field->valor_padrao; ?>" name="<?php echo $field->nome; ?>" />
 												<?php } ?>
 												<?php if($field->tipo_campo == 'DT'){ ?>
-													<input id="<?php echo $field->nome; ?>" type="datetime" class="form-control" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : ''; ?>" name="<?php echo $field->nome; ?>" />
+													<input id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> type="datetime" class="form-control" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : $field->valor_padrao; ?>" name="<?php echo $field->nome; ?>" />
 												<?php } ?>
 											</div>
 										</div>
 									<?php } ?>
-								</div>
-								
-								<div id="seo-tab" class="tab-pane fade">
-									<div class="form-group">
-										<label for="meta_keywords" class="col-md-3 control-label">Palavras Chave</label>
-
-										<div class="col-md-7">
-											<div id="meta_keywords"></div>
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="meta_descricao" class="col-md-3 control-label">Meta Descrição</label>
-
-										<div class="col-md-7">
-											<textarea id="meta_descricao" type="text" class="form-control" name="meta_descricao"><?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->meta_descricao : ''; ?></textarea>
-										</div>
-									</div>
-									<script>
-										new Taggle('meta_keywords', {
-											<?php if(isset($<ITEM_MODULO>) && $<ITEM_MODULO>->meta_keywords != ''){ ?>
-												tags: [
-													<?php $tags = explode(',',$<ITEM_MODULO>->meta_keywords); ?>
-													<?php foreach($tags as $tag){ ?>			    
-												    	'<?php echo $tag; ?>',
-												    <?php } ?>
-												],
-											<?php } ?>
-										    duplicateTagClass: 'bounce'
-										});
-									</script>
 								</div>
 							</form>
 							<?php if($modulo->imagem){ ?>

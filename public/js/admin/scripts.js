@@ -11,10 +11,18 @@ $(document).ready(function(){
   /* jQuery PARA SUBMETER O FORMULARIO AO CLICAR EM SALVAR
    * (o botão de salvar fica no .box-footer, fora do form)
    */
-  $('.box-footer [type="submit"]').click(function(){
-    $('#mainForm').submit();
+  $('.box-footer [type="submit"]').click(function(e){
+    if (!$('#mainForm')[0].checkValidity()) {
+      $('#mainForm [required]').each(function(){
+        if(!$(this).val()){
+          $(this).css('border-color', '#dd4b39');
+        }
+        
+      });
+    }else{
+      $('#mainForm').submit();
+    }
   });
-
   /*
   $('.session-return-wrapper .fa-times').click(function(){
   	$('.session-return-wrapper').fadeOut();

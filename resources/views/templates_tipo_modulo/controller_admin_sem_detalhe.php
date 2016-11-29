@@ -18,33 +18,14 @@ class Admin<NOME_MODULO>Controller extends Controller
 	}
 
 	public function index(){
-		$data['<ITEMS_MODULO>'] = \App\<NOME_MODULO>::get();
-		$data['fields_listagem'] = array();
-		foreach ($this->fields as $field) {
-			if($field->listagem){
-				$data['fields_listagem'][] = $field;
-			}
+		$data['modulo'] = $this->modulo;
+		$data['fields'] = $this->fields;
+		$data['<ITEM_MODULO>'] = \App\<NOME_MODULO>::find(1);
+		if($this->modulo->galeria){
+			$data['<ITEM_MODULO>']->imagens = \App\<NOME_MODULO>::getImagens(1);
 		}
 		return view('admin/<ROTA_MODULO>',$data);
 	}
-
-	public function add(){
-		$data = array();
-		$data['modulo'] = $this->modulo;
-		$data['fields'] = $this->fields;
-		return view('admin/form-<ROTA_MODULO>', $data);
-	}
-
-	public function edit($id){
-		$data['modulo'] = $this->modulo;
-		$data['fields'] = $this->fields;
-		$data['<ITEM_MODULO>'] = \App\<NOME_MODULO>::find($id);
-		if($this->modulo->galeria){
-			$data['<ITEM_MODULO>']->imagens = \App\<NOME_MODULO>::getImagens($id);
-		}
-		return view('admin/form-<ROTA_MODULO>',$data);
-	}
-
 
 
 	public function save(Request $request){
@@ -57,12 +38,9 @@ class Admin<NOME_MODULO>Controller extends Controller
 			if($this->modulo->imagem){
 				$arrayFields[] = 'thumbnail_principal';
 			}
-			//$post['slug'] = $this->slugify($post['titulo']);
-			if($request->input('id')){
-				\App\<NOME_MODULO>::editar($arrayFields, $post, $request->input('id'));
-			}else{
-				\App\<NOME_MODULO>::criar($arrayFields, $post);
-			}
+
+			\App\<NOME_MODULO>::editar($arrayFields, $post, $request->input('id'));
+	
 			\Session::flash('type', 'success');
             \Session::flash('message', "Alteracoes salvas com sucesso!");
 			return redirect('admin/<ROTA_MODULO>');
@@ -147,7 +125,7 @@ class Admin<NOME_MODULO>Controller extends Controller
 			}
 			\Session::flash('type', 'success');
             \Session::flash('message', "Alteracoes salvas com sucesso!");
-			return redirect('admin/<ROTA_MODULO>/edit/'.$post['id_<ITEM_MODULO>']);
+			return redirect('admin/<ROTA_MODULO>');
 		}catch(Exception $e){
 			\Session::flash('type', 'error');
             \Session::flash('message', $e->getMessage());
@@ -163,7 +141,7 @@ class Admin<NOME_MODULO>Controller extends Controller
 
 			\Session::flash('type', 'success');
             \Session::flash('message', "Registro removido com sucesso!");
-			return redirect('admin/<ROTA_MODULO>/edit/'.$imagem->id_<ITEM_MODULO>);
+			return redirect('admin/<ROTA_MODULO>');
 		}catch(Exception $e){
 			\Session::flash('type', 'error');
             \Session::flash('message', "Nao foi possível remover o registro!");
@@ -173,8 +151,4 @@ class Admin<NOME_MODULO>Controller extends Controller
 		
 	}
 
-	private function slugify($string)
-    {
-        return strtolower(trim(preg_replace('~[^0-9a-z]+~i', '-', html_entity_decode(preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', htmlentities($string, ENT_QUOTES, 'UTF-8')), ENT_QUOTES, 'UTF-8')), '-'));
-    }
 }
