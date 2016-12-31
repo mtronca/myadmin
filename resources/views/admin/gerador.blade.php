@@ -34,7 +34,7 @@
                   <th>ID</th>
                   <th>Título</th>
                   <th>Rota</th>
-                  <th>Ação</th>
+                  <th class="th-action">Ação</th>
                 </tr>
                 </thead>
                 <tbody>

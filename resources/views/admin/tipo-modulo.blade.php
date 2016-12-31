@@ -33,7 +33,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Título</th>
-                  <th>Ação</th>
+                  <th class="th-action">Ação</th>
                 </tr>
                 </thead>
                 <tbody>

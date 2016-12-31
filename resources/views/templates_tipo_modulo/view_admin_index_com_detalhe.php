@@ -36,7 +36,7 @@
 									<?php foreach ($fields_listagem as $field): ?>
 										<th><?php echo $field->label; ?></th>
 									<?php endforeach ?>
-									<th>Ação</th>
+									<th class="th-action">Ação</th>
 								</tr>
 
 							</thead>

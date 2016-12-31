@@ -111,6 +111,7 @@
                                             <th>Listagem</th>
                                             <th>Required</th>
                                             <th>Tipo Campo</th>
+                                            <th>Ordem</th>
                                             <th>Ação</th>
                                         </tr>
 
@@ -145,6 +146,7 @@
 	                                                		<option <?php echo ($campo->tipo_campo == 'DT') ? 'selected' : ''; ?> value="DT">Datetime</option>
 	                                                	</select>
 	                                                </td>
+	                                                <td><input type="text" class="form-control" name="edit-campo-ordem[]" value="<?php echo $campo->ordem; ?>"/></td>
 	                                                <td><button type="button" data-id="<?php echo $campo->id; ?>" class="btn btn-danger delete_campo"><i class="fa fa-trash-o"></i></button></td>
 	                                            </tr>
 	                                        <?php endforeach ?>
@@ -173,7 +175,7 @@
                             			});
                             		});
                                 	$('#add_campo').click(function(){
-                                		$('#tbody-campos').append('<tr> <td><input type="text" class="form-control" name="campo-label[]"/></td> <td><input type="text" class="form-control" name="campo-nome[]"/></td> <td><input type="text" class="form-control" name="campo-valor-padrao[]"/></td> <td><select class="form-control" name="campo-listagem[]"><option value="1">Sim</option><option value="0">Não</option></select></td><td><select class="form-control" name="campo-required[]"><option value="1">Sim</option><option value="0">Não</option></select></td> <td> <select class="form-control" name="campo-tipo-campo[]"> <option value="I">Input Text</option> <option value="T">Textarea</option> <option value="D">Date</option> <option value="DT">Datetime</option> </select> </td> <td><button type="button" class="btn btn-danger delete_campo"><i class="fa fa-trash-o"></i></button></td> </tr>');
+                                		$('#tbody-campos').append('<tr> <td><input type="text" class="form-control" name="campo-label[]"/></td> <td><input type="text" class="form-control" name="campo-nome[]"/></td> <td><input type="text" class="form-control" name="campo-valor-padrao[]"/></td> <td><select class="form-control" name="campo-listagem[]"><option value="1">Sim</option><option value="0">Não</option></select></td><td><select class="form-control" name="campo-required[]"><option value="1">Sim</option><option value="0">Não</option></select></td> <td> <select class="form-control" name="campo-tipo-campo[]"> <option value="I">Input Text</option><option value="N">Number</option> <option value="T">Textarea</option> <option value="D">Date</option> <option value="DT">Datetime</option> </select> </td><td><input type="text" class="form-control" name="campo-ordem[]"/></td> <td><button type="button" class="btn btn-danger delete_campo"><i class="fa fa-trash-o"></i></button></td> </tr>');
                                 		$('.delete_campo').click(function(){
                                 			$(this).closest('tr').remove();
                                 		});
@@ -203,6 +205,15 @@
 			e.preventDefault();
 			alert('Você deve adicionar ao menos um campo para o módulo');
 		}
+	});
+	$('#label').on('change',function(){
+		var label = $(this).val(),
+			nome = label.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'').replace(/ /g,""),
+			rota = label.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'-').replace(/ /g,"-").toLowerCase(),
+			tabela = label.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'_').replace(/ /g,"_").toLowerCase();
+		$('#nome').val(nome);
+		$('#rota').val(rota);
+		$('#nome_tabela').val(tabela);
 	});
 </script>
 @endsection

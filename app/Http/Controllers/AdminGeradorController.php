@@ -143,6 +143,10 @@ class AdminGeradorController extends Controller
 					$tipo = 'VARCHAR';
 					$valor_tipo = '(255)';
 					break;
+				case 'N':
+					$tipo = 'DECIMAL';
+					$valor_tipo = '(15,2)';
+					break;
 				case 'T':
 					$tipo = 'TEXT';
 					$valor_tipo = '';
@@ -166,6 +170,7 @@ class AdminGeradorController extends Controller
 				'label' => $input['campo-label'][$key],
 				'required' => $input['campo-required'][$key],
 				'tipo_campo' => $input['campo-tipo-campo'][$key],
+				'ordem' => $input['campo-ordem'][$key],
 				'id_modulo' => $modulo->id,
 			);
 			\App\CampoModulo::criar($campoInfo);
@@ -195,6 +200,10 @@ class AdminGeradorController extends Controller
 						$tipo = 'VARCHAR';
 						$valor_tipo = '(255)';
 						break;
+					case 'N':
+						$tipo = 'DECIMAL';
+						$valor_tipo = '(15,2)';
+						break;
 					case 'T':
 						$tipo = 'TEXT';
 						$valor_tipo = '';
@@ -219,6 +228,7 @@ class AdminGeradorController extends Controller
 					'required' => $input['edit-campo-required'][$key],
 					'label' => $input['edit-campo-label'][$key],
 					'tipo_campo' => $input['edit-campo-tipo-campo'][$key],
+					'ordem' => $input['edit-campo-ordem'][$key],
 					'id_modulo' => $modulo->id,
 				);
 				\App\CampoModulo::editar($campoInfo, $campoObject->id);
@@ -232,6 +242,10 @@ class AdminGeradorController extends Controller
 					case 'I':
 						$tipo = 'VARCHAR';
 						$valor_tipo = '(255)';
+						break;
+					case 'N':
+						$tipo = 'DECIMAL';
+						$valor_tipo = '(15,2)';
 						break;
 					case 'T':
 						$tipo = 'TEXT';
@@ -255,6 +269,7 @@ class AdminGeradorController extends Controller
 					'required' => $input['campo-required'][$key],
 					'label' => $input['campo-label'][$key],
 					'tipo_campo' => $input['campo-tipo-campo'][$key],
+					'ordem' => $input['campo-ordem'][$key],
 					'id_modulo' => $modulo->id,
 				);
 				\App\CampoModulo::criar($campoInfo);

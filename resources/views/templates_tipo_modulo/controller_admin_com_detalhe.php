@@ -14,7 +14,7 @@ class Admin<NOME_MODULO>Controller extends Controller
     public function __construct(){
 		$this->middleware('auth');
 		$this->modulo = \App\Gerador::find(<ID_MODULO>);
-		$this->fields = \App\CampoModulo::where('id_modulo',<ID_MODULO>)->get();
+		$this->fields = \App\CampoModulo::where('id_modulo',<ID_MODULO>)->orderBy('ordem','ASC')->get();
 	}
 
 	public function index(){
@@ -58,9 +58,9 @@ class Admin<NOME_MODULO>Controller extends Controller
 			}
 			if($this->modulo->imagem){
 				$arrayFields[] = 'thumbnail_principal';
-				$arrayFields[] = 'meta_descricao';
-				$arrayFields[] = 'meta_keywords';
 			}
+			$arrayFields[] = 'meta_descricao';
+			$arrayFields[] = 'meta_keywords';
 			//$post['slug'] = $this->slugify($post['titulo']);
 			if($request->input('id')){
 				\App\<NOME_MODULO>::editar($arrayFields, $post, $request->input('id'));

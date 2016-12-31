@@ -7,13 +7,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Data Tables
-        <small>advanced tables</small>
+        Grupos de Usuário
+        <small>Listagem</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Tables</a></li>
-        <li class="active">Data tables</li>
+        <li><a href="{{ url('admin') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">Grupos de Usuário</li>
       </ol>
     </section>
 
@@ -23,7 +22,10 @@
         <div class="col-xs-12">
           
           <div class="box">
-            
+            <div class="box-header">
+               <a href="{{ url('admin/users-groups/add') }}" class="table-add"><i class="fa fa-plus"></i> Adicionar</a>
+              <hr>
+            </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="list-data-table" class="table table-bordered table-striped">
@@ -31,7 +33,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Nome</th>
-                  <th>Ação</th>
+                  <th class="th-action">Ação</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -56,6 +58,9 @@
               </table>
             </div>
             <!-- /.box-body -->
+            <div class="box-footer">
+               <a href="{{ url('admin/users-groups/add') }}" class="table-add"><i class="fa fa-plus"></i> Adicionar</a>
+            </div>
           </div>
           <!-- /.box -->
         </div>

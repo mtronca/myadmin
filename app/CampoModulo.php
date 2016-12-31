@@ -19,6 +19,7 @@ class CampoModulo extends Model
 				'required' => $input['required'],
 				'label' => $input['label'],
 				'tipo_campo' => $input['tipo_campo'],
+				'ordem' => $input['ordem'],
 				'id_modulo' => $input['id_modulo'],
 			]
 		]);
@@ -33,6 +34,7 @@ class CampoModulo extends Model
 			'label' => $input['label'],
 			'required' => $input['required'],
 			'tipo_campo' => $input['tipo_campo'],
+			'ordem' => $input['ordem'],
 			'id_modulo' => $input['id_modulo'],
 		]);
 	}

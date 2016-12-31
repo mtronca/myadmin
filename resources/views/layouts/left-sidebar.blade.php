@@ -4,7 +4,7 @@
 		<!-- Sidebar user panel -->
 		<div class="user-panel">
 			<div class="pull-left image">
-				<img src="img/user2-160x160.jpg" class="img-circle" alt="User Image">
+				<img src="{{ (Auth::user()->thumbnail_principal != '') ? 'uploads/users/'.Auth::user()->thumbnail_principal : 'img/user2-160x160.jpg' }}" class="img-circle" alt="User Image">
 			</div>
 			<div class="pull-left info">
 				<p>{{ Auth::user()->name }}</p>
@@ -57,10 +57,12 @@
 				</a>
 				<ul class="treeview-menu">
 					<li><a href="{{ url('admin/informacoes-basicas') }}"><i class="fa fa-circle-o"></i> Informações Básicas Website</a></li>
-					<li><a href="{{ url('admin/gerador') }}"><i class="fa fa-circle-o"></i> Gerador de Módulos</a></li>
-					<li><a href="{{ url('admin/tipo-modulo') }}"><i class="fa fa-circle-o"></i> Tipos de Módulos</a></li>
-					<!--<li><a href="{{ url('admin/users') }}"><i class="fa fa-circle-o"></i> Usuários</a></li>
-					<li><a href="{{ url('admin/users-groups') }}"><i class="fa fa-circle-o"></i> Grupos de Usuário</a></li>-->
+					<?php if(Auth::user()->id_user_group == 1){ ?>
+						<li><a href="{{ url('admin/gerador') }}"><i class="fa fa-circle-o"></i> Gerador de Módulos</a></li>
+						<li><a href="{{ url('admin/tipo-modulo') }}"><i class="fa fa-circle-o"></i> Tipos de Módulos</a></li>
+						<li><a href="{{ url('admin/users') }}"><i class="fa fa-circle-o"></i> Usuários</a></li>
+						<li><a href="{{ url('admin/users-groups') }}"><i class="fa fa-circle-o"></i> Grupos de Usuário</a></li>
+					<?php } ?>
 
 				</ul>
 			</li>

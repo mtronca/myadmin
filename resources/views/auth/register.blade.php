@@ -1,5 +1,4 @@
-<?php /* ?>
-@extends('layouts.app')
+@extends('layouts.website')
 
 @section('content')
 <div class="container">
@@ -67,6 +66,22 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('id_user_group') ? ' has-error' : '' }}">
+                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+
+                            <div class="col-md-6">
+                                <select id="id_user_group" class="form-control" name="id_user_group">
+                                  <option value="1">Master</option>
+                                  <option value="2">Usuário</option>
+                                </select>
+                                @if ($errors->has('id_user_group'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('id_user_group') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
@@ -81,7 +96,7 @@
     </div>
 </div>
 @endsection
-<?php */ ?>
+<?php /* ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -173,4 +188,4 @@
 </script>
 </body>
 </html>
-
+<?php */ ?>

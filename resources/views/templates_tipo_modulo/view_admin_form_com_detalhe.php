@@ -55,6 +55,9 @@
 												<?php if($field->tipo_campo == 'I'){ ?>
 													<input id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> type="text" class="form-control" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : $field->valor_padrao; ?>" name="<?php echo $field->nome; ?>" />
 												<?php } ?>
+												<?php if($field->tipo_campo == 'N'){ ?>
+													<input id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> type="number" class="form-control" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : $field->valor_padrao; ?>" name="<?php echo $field->nome; ?>" />
+												<?php } ?>
 												<?php if($field->tipo_campo == 'T'){ ?>
 													<textarea id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> class="form-control tinymce" name="<?php echo $field->nome; ?>"><?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : $field->valor_padrao; ?></textarea>
 												<?php } ?>

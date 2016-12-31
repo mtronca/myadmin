@@ -19,10 +19,24 @@ $(document).ready(function(){
         }
         
       });
+      $('[href="#info-tab"]').closest('ul').find('li.active').removeClass('active');
+      $('[href="#info-tab"]').closest('li').attr('class', 'active');
+      $('.tab-content .tab-pane').removeClass('in active');
+      $('#info-tab').addClass('in active');
+
     }else{
       $('#mainForm').submit();
     }
   });
+
+  $('#mainForm input').focus(function(){
+    $(this).css('border-color', '#3c8dbc');
+  });
+
+  $('#mainForm input').blur(function(){
+    $(this).css('border-color', '#d2d6de');
+  });
+
   /*
   $('.session-return-wrapper .fa-times').click(function(){
   	$('.session-return-wrapper').fadeOut();

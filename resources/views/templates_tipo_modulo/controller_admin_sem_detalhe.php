@@ -14,7 +14,7 @@ class Admin<NOME_MODULO>Controller extends Controller
     public function __construct(){
 		$this->middleware('auth');
 		$this->modulo = \App\Gerador::find(<ID_MODULO>);
-		$this->fields = \App\CampoModulo::where('id_modulo',<ID_MODULO>)->get();
+		$this->fields = \App\CampoModulo::where('id_modulo',<ID_MODULO>)->orderBy('ordem','ASC')->get();
 	}
 
 	public function index(){

@@ -56,6 +56,16 @@ Route::get('admin/users-groups/edit/{id}', 'AdminUserGroupController@edit');
 Route::post('admin/users-groups/save', 'AdminUserGroupController@save');
 Route::get('admin/users-groups/delete/{id}', 'AdminUserGroupController@delete');
 
+// ================================
+// User routes BEGINING
+// ================================
+Route::get('admin/users', 'AdminUserController@index');
+Route::get('admin/users/add', 'AdminUserController@add');
+Route::get('admin/users/edit/{id}', 'AdminUserController@edit');
+Route::post('admin/users/save', 'AdminUserController@save');
+Route::get('admin/users/delete/{id}', 'AdminUserController@delete');
+Route::post('admin/users/upload', 'AdminUserController@upload_image');
+Route::post('admin/users/crop', 'AdminUserController@crop_image');
 
 
 // ================================
@@ -103,5 +113,4 @@ Route::get('/', 'HomeController@index');
 Route::get('telegram/get-updates','TelegramController@getUpdates');
 Route::post('telegram/send-message','TelegramController@postSendMessage');
 //Route::get('send-message','TelegramController@getSendMessage');
-
 

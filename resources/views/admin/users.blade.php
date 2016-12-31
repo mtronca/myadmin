@@ -7,8 +7,8 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Data Tables
-        <small>advanced tables</small>
+        Usuários
+        <small>Listagem</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="{{ url('admin') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
@@ -18,19 +18,14 @@
 
     <!-- Main content -->
     <section class="content">
-      @if(\Session::has('type') && \Session::has('message'))            
-            <div class="session-return-wrapper">
-                <div class="session-return-{{ \Session::get('type') }}">
-                    {{ \Session::get('message') }}
-                    <i class="fa fa-times"></i>
-                </div>
-            </div>
-      @endif
       <div class="row">
         <div class="col-xs-12">
           
           <div class="box">
-            
+            <div class="box-header">
+              <a href="{{ url('admin/users/add') }}" class="table-add"><i class="fa fa-plus"></i> Adicionar</a>
+              <hr>
+            </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="list-data-table" class="table table-bordered table-striped">
@@ -38,7 +33,7 @@
                 <tr>
                   <th>Nome</th>
                   <th>Grupo de Usuário</th>
-                  <th>Ação</th>
+                  <th class="th-action">Ação</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,8 +42,8 @@
                       <td> <?php echo $user->name; ?></td>
                       <td> <?php echo ($user->userGroup) ? $user->userGroup->nome : 'None'; ?></td>
                       <td>
-                        <a href="/admin/users/view/<?php echo $user->id; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
-                        <a href="/admin/users/delete/<?php echo $user->id; ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="/admin/users/edit/<?php echo $user->id; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                        <a href="/admin/users/delete/<?php echo $user->id; ?>" class="btn btn-danger deletar"><i class="fa fa-trash"></i></a>
                       </td>
                     </tr>
                 <?php endforeach ?>
@@ -63,6 +58,9 @@
               </table>
             </div>
             <!-- /.box-body -->
+            <div class="box-footer">
+              <a href="{{ url('admin/users/add') }}" class="table-add"><i class="fa fa-plus"></i> Adicionar</a>
+            </div>
           </div>
           <!-- /.box -->
         </div>

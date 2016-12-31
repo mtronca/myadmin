@@ -9,9 +9,9 @@
         <small>Grupo de Usuario</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Tables</a></li>
-        <li class="active">Data tables</li>
+        <li><a href="{{ url('admin') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ url('admin/users-group') }}"> Grupos de Usuário</a></li>
+        <li class="active"><?php echo isset($userGroup) ? 'Editar' : 'Adicionar'; ?> </li>
       </ol>
     </section>
     <section class="content">
@@ -19,15 +19,7 @@
             <div class="col-lg-12">
                 <div class="box">
                     <div class="box-header">
-                        @if(\Session::has('type') && \Session::has('message'))
-                            
-                                <div class="session-return-wrapper">
-                                    <div class="session-return-{{ \Session::get('type') }}">
-                                        {{ \Session::get('message') }}
-                                    </div>
-                                </div>
-                            
-                        @endif
+                        
                     </div>   
                     <!-- /.box-header -->
                     <div class="box-body">
