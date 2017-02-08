@@ -20,7 +20,7 @@
 				<div class="box">
 					<div class="box-header">
 
-					</div>   
+					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
 						<ul class="nav nav-pills nav-justified">
@@ -32,15 +32,15 @@
 						<div class="spacer"></div>
 						<form id="mainForm" class="form-horizontal" role="form" method="POST" action="{{ url('/admin/users/save') }}">
 						<div class="tab-content">
-							
+
 								<div id="info-tab" class="tab-pane fade in active">
 									{{ csrf_field() }}
-								
+
 									<input type="hidden" name="thumbnail_principal" value="<?php echo (isset($user)) ? $user->thumbnail_principal : ''; ?>">
 									<?php if(isset($user)){ ?>
 										<input type="hidden" name="id" value="<?php echo $user->id; ?>"/>
 									<?php } ?>
-									
+
 									<div class="form-group">
 										<label for="name" class="col-md-3 control-label">Nome</label>
 
@@ -64,7 +64,9 @@
 											<input id="password" type="password" class="form-control" value="" name="password" />
 										</div>
 									</div>
-
+									<?php if(isset($user) && $user->id_user_group != 1){ ?>
+										<input type="hidden" name="id_user_group" value="<?php echo $user->id_user_group; ?>">
+									<?php }else{ ?>
 									<div class="form-group">
 										<label for="id_user_group" class="col-md-3 control-label">Grupo do Usuário</label>
 
@@ -77,12 +79,12 @@
 											</select>
 										</div>
 									</div>
-
+									<?php } ?>
 								</div>
-								
-								
+
+
 							</form>
-							<?php if(isset($user)){ ?> 
+							<?php if(isset($user)){ ?>
 								<div id="image-tab" class="tab-pane fade">
 									<div class="form-horizontal">
 										<div class="form-group">

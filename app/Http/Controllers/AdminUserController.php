@@ -35,22 +35,30 @@ class AdminUserController extends Controller
 	public function save(Request $request){
 		try{
 			$post = $request->input();
-
+			$is_master = 0;
 			if($request->input('id')){
 				\App\User::editar($post, $request->input('id'));
+				$user = \App\User::find($request->input('id'));
+				if($user->id_user_group == 1){
+					$is_master = 1;
+				}
 			}else{
 				\App\User::criar($post);
 			}
 			\Session::flash('type', 'success');
-            \Session::flash('message', "Alteracoes salvas com sucesso!");
-			return redirect('admin/users');
+         \Session::flash('message', "Alteracoes salvas com sucesso!");
+			if($is_master){
+				return redirect('admin/users');
+			}else{
+				return redirect('admin');
+			}
 		}catch(Exception $e){
 			\Session::flash('type', 'error');
             \Session::flash('message', $e->getMessage());
             return redirect()->back();
 		}
-		
-		
+
+
 	}
 
 	public function upload_image(Request $request) {
@@ -91,7 +99,7 @@ class AdminUserController extends Controller
 			DB::table('users')
 				->where('id', $id)
 				->delete();
-			
+
 			\Session::flash('type', 'success');
             \Session::flash('message', "Registro removido com sucesso!");
 			return redirect('admin/users');
@@ -100,7 +108,7 @@ class AdminUserController extends Controller
             \Session::flash('message', "Nao foi possivel remover o registro!");
             return redirect()->back();
 		}
-		
-		
+
+
 	}
 }

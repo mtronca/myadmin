@@ -15,6 +15,7 @@
 // Admin Index routes BEGINING
 // ================================
 Route::get('/admin', 'AdminIndexController@index');
+Route::get('/admin/busca', 'AdminIndexController@busca');
 //Route::get('info/edit', 'AdminIndexController@edit');
 //Route::post('info/save', 'AdminIndexController@save');
 //Route::post('info/upload', 'AdminIndexController@upload_image');
@@ -113,4 +114,3 @@ Route::get('/', 'HomeController@index');
 Route::get('telegram/get-updates','TelegramController@getUpdates');
 Route::post('telegram/send-message','TelegramController@postSendMessage');
 //Route::get('send-message','TelegramController@getSendMessage');
-

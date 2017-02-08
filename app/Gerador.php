@@ -53,4 +53,9 @@ class Gerador extends Model
 				->where('id', $id)
 				->delete();
 	}
+
+	public function campos()
+    {
+        return $this->hasMany('App\CampoModulo','id_modulo');
+    }
 }

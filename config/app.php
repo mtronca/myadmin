@@ -166,6 +166,7 @@ return [
         App\Providers\ComposerServiceProvider::class,
         Telegram\Bot\Laravel\TelegramServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+		  App\Modules\ModulesServiceProvider::class,
 
     ],
 

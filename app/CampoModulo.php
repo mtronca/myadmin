@@ -10,7 +10,7 @@ class CampoModulo extends Model
 	protected $table = 'sis_campo_modulo';
 
 	public static function criar($input){
-		
+
 		return DB::table('sis_campo_modulo')->insert([
 			[
 				'nome' => $input['nome'],
@@ -44,4 +44,9 @@ class CampoModulo extends Model
 				->where('id', $id)
 				->delete();
 	}
+
+	public function modulo()
+   {
+      return $this->belongsTo('App\Gerador', 'id_modulo');
+   }
 }

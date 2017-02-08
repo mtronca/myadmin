@@ -46,7 +46,26 @@
 										<td><?php echo $item->id; ?></td>
 										<?php foreach ($fields_listagem as $field): ?>
 											<?php $campo = $field->nome; ?>
-											<td><?php echo $item->$campo; ?></td>
+											<td>
+												<?php switch ($field->tipo_campo) {
+													case 'S':
+														$valor = ($item->$campo) ? 'Sim' : 'Não';
+														break;
+													case 'N':
+														$valor = number_format($item->$campo,2,',','.');
+														break;
+													case 'D':
+														$valor = date('d/m/Y',strtotime($item->$campo));
+														break;
+													case 'DT':
+														$valor = date('d/m/Y H:i:s',strtotime($item->$campo));
+														break;
+													default:
+														$valor = $item->$campo;
+														break;
+												} ?>
+												<?php echo $valor; ?>
+											</td>
 										<?php endforeach ?>
 										<td><a href="/admin/<ROTA_MODULO>/edit/<?php echo $item->id; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
 											<a href="/admin/<ROTA_MODULO>/delete/<?php echo $item->id; ?>" class="btn btn-danger deletar"><i class="fa fa-trash"></i></a>
@@ -81,4 +100,3 @@
 </div>
 <!-- /.content-wrapper -->
 @endsection
-

@@ -19,7 +19,7 @@
 				<div class="box">
 					<div class="box-header">
 
-					</div>   
+					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
 						<ul class="nav nav-pills nav-justified">
@@ -59,7 +59,7 @@
 										<input id="item_modulo" type="text" <?php echo (isset($modulo)) ? 'readonly' : ''; ?> class="form-control" value="<?php echo (isset($modulo)) ? $modulo->item_modulo : ''; ?>" name="item_modulo" />
 									</div>
 								</div>
-								
+
 								<div class="form-group">
 									<label for="items_modulo" class="col-md-3 control-label">Itens do Módulo</label>
 									<div class="col-md-7">
@@ -128,14 +128,14 @@
 	                                                	<select class="form-control" name="edit-campo-listagem[]">
 	                                                		<option <?php echo ($campo->listagem == 1) ? 'selected' : ''; ?> value="1">Sim</option>
 	                                                		<option <?php echo ($campo->listagem == 0) ? 'selected' : ''; ?> value="0">Não</option>
-	                                                		
+
 	                                                	</select>
 	                                                </td>
 	                                                <td>
 	                                                	<select class="form-control" name="edit-campo-required[]">
 	                                                		<option <?php echo ($campo->required == 1) ? 'selected' : ''; ?> value="1">Sim</option>
 	                                                		<option <?php echo ($campo->required == 0) ? 'selected' : ''; ?> value="0">Não</option>
-	                                                		
+
 	                                                	</select>
 	                                                </td>
 	                                                <td>
@@ -144,6 +144,7 @@
 	                                                		<option <?php echo ($campo->tipo_campo == 'T') ? 'selected' : ''; ?> value="T">Textarea</option>
 	                                                		<option <?php echo ($campo->tipo_campo == 'D') ? 'selected' : ''; ?> value="D">Date</option>
 	                                                		<option <?php echo ($campo->tipo_campo == 'DT') ? 'selected' : ''; ?> value="DT">Datetime</option>
+																			<option <?php echo ($campo->tipo_campo == 'S') ? 'selected' : ''; ?> value="S">Select</option>
 	                                                	</select>
 	                                                </td>
 	                                                <td><input type="text" class="form-control" name="edit-campo-ordem[]" value="<?php echo $campo->ordem; ?>"/></td>
@@ -152,7 +153,7 @@
 	                                        <?php endforeach ?>
 	                                    <?php } ?>
                                     </tbody>
-                                    
+
                                 </table>
                                 <script type="text/javascript">
                             		$('.delete_campo').click(function(){
@@ -175,8 +176,8 @@
                             			});
                             		});
                                 	$('#add_campo').click(function(){
-                                		$('#tbody-campos').append('<tr> <td><input type="text" class="form-control" name="campo-label[]"/></td> <td><input type="text" class="form-control" name="campo-nome[]"/></td> <td><input type="text" class="form-control" name="campo-valor-padrao[]"/></td> <td><select class="form-control" name="campo-listagem[]"><option value="1">Sim</option><option value="0">Não</option></select></td><td><select class="form-control" name="campo-required[]"><option value="1">Sim</option><option value="0">Não</option></select></td> <td> <select class="form-control" name="campo-tipo-campo[]"> <option value="I">Input Text</option><option value="N">Number</option> <option value="T">Textarea</option> <option value="D">Date</option> <option value="DT">Datetime</option> </select> </td><td><input type="text" class="form-control" name="campo-ordem[]"/></td> <td><button type="button" class="btn btn-danger delete_campo"><i class="fa fa-trash-o"></i></button></td> </tr>');
-                                		$('.delete_campo').click(function(){
+                                		$('#tbody-campos').append('<tr> <td><input type="text" class="form-control" name="campo-label[]"/></td> <td><input type="text" class="form-control" name="campo-nome[]"/></td> <td><input type="text" class="form-control" name="campo-valor-padrao[]"/></td> <td><select class="form-control" name="campo-listagem[]"><option value="1">Sim</option><option value="0">Não</option></select></td><td><select class="form-control" name="campo-required[]"><option value="1">Sim</option><option value="0">Não</option></select></td> <td> <select class="form-control" name="campo-tipo-campo[]"> <option value="I">Input Text</option><option value="N">Number</option> <option value="T">Textarea</option> <option value="D">Date</option> <option value="DT">Datetime</option><option value="S">Select</option> </select> </td><td><input type="text" class="form-control" name="campo-ordem[]"/></td> <td><button type="button" class="btn btn-danger delete_campo"><i class="fa fa-trash-o"></i></button></td> </tr>');
+												$('.delete_campo').click(function(){
                                 			$(this).closest('tr').remove();
                                 		});
                                 	});

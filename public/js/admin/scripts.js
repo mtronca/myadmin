@@ -8,25 +8,37 @@ $(document).ready(function(){
       "info": true,
    });
 
-  /* jQuery PARA SUBMETER O FORMULARIO AO CLICAR EM SALVAR
-   * (o botão de salvar fica no .box-footer, fora do form)
-   */
+	/*
+	Script para submeter o formulário caso não possua campos required em branco.
+	Faz a validação dos campos required do #mainForm
+	*/
   $('.box-footer [type="submit"]').click(function(e){
-    if (!$('#mainForm')[0].checkValidity()) {
-      $('#mainForm [required]').each(function(){
-        if(!$(this).val()){
-          $(this).css('border-color', '#dd4b39');
-        }
-        
-      });
-      $('[href="#info-tab"]').closest('ul').find('li.active').removeClass('active');
+	e.preventDefault();
+	var wrongValidation = 0;
+	var inputsNumber = 0;
+   $('#mainForm [required]').each(function(){
+		//console.log(tinyMCE.editors[$(this).attr('id')].getContent());
+     if(!$(this).val() || ($(this).is('textarea') && !tinyMCE.editors[$(this).attr('id')].getContent())){
+		 inputsNumber++;
+       $(this).css('border-color', '#dd4b39');
+		 if($(this).is('textarea')){
+			if(!tinyMCE.editors[$(this).attr('id')].getContent()){
+				$(this).prev().css('border-color', '#dd4b39');
+			}else{
+				wrongValidation++;
+			}
+		 }
+     }
+   });
+	if(inputsNumber > wrongValidation){
+		$('[href="#info-tab"]').closest('ul').find('li.active').removeClass('active');
       $('[href="#info-tab"]').closest('li').attr('class', 'active');
       $('.tab-content .tab-pane').removeClass('in active');
       $('#info-tab').addClass('in active');
-
-    }else{
-      $('#mainForm').submit();
-    }
+		alertUtil.alertError('Verifique os erros do formulário.');
+	}else{
+		$('#mainForm').submit();
+	}
   });
 
   $('#mainForm input').focus(function(){
@@ -36,6 +48,7 @@ $(document).ready(function(){
   $('#mainForm input').blur(function(){
     $(this).css('border-color', '#d2d6de');
   });
+
 
   /*
   $('.session-return-wrapper .fa-times').click(function(){
@@ -78,7 +91,7 @@ $(document).ready(function(){
                   //$(div_endereco).find('[name="endereco-fieldset[cidade]"]').val(unescape(resultadoCEP["cidade"]));
                   $('[name="enderecoGmaps"]').val(unescape(resultadoCEP["tipo_logradouro"]) + " " + unescape(resultadoCEP["logradouro"]));
                   $('[name="enderecoGmaps"]').focus();
-                  
+
               }
           },
           error: function(xhr, ajaxOptions, thrownError) {
@@ -220,7 +233,7 @@ $(document).ready(function(){
       });
   }
 
-  tinymce.init({ 
+  tinymce.init({
     selector:'.tinymce',
     force_br_newlines : true,
     force_p_newlines : false,
@@ -239,6 +252,31 @@ $(document).ready(function(){
       e.preventDefault();
     }
   });
-  
+
+  $('[name="titulo"], [name="nome"]').slugify({ slug: '[name="slug"]', type: '-' });
+
+  $('.delete-image').click(function(){
+	  var id = $(this).attr('data');
+	  var modulo = $(this).attr('data-modulo');
+	  $.ajax({
+			 url: '/admin/'+modulo+'/delete_imagem/'+id,
+			 dataType: 'JSON',
+			 data:{
+				 _token : $('[name="_token"]').val()
+			 },
+			 type: "POST",
+			 success: function(data) {
+				 $( '.imagem-galeria-' + id).remove();
+				 if(data.status){
+					 alertUtil.alertSuccess(data.message);
+				 }else{
+					 alertUtil.alertError(data.message);
+				 }
+
+			  }
+
+		 });
+
+  });
 
 });

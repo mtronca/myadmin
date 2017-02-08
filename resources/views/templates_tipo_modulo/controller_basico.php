@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Modules\<NOME_MODULO>\Controllers;
 
 use Illuminate\Http\Request;
 use Mail;
 use App\Http\Requests;
+use App\Http\Controllers\Controller;
 
 class <NOME_MODULO>Controller extends Controller
 {

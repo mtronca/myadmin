@@ -43,7 +43,7 @@ class AdminGeradorController extends Controller
 				$modulo = \App\Gerador::find($id_modulo);
 				$this->createTable($request->input(), $modulo);
 				$this->generateFiles($modulo);
-				
+
 			}
 			\Session::flash('type', 'success');
             \Session::flash('message', "Alteracoes salvas com sucesso!");
@@ -53,8 +53,8 @@ class AdminGeradorController extends Controller
             \Session::flash('message', $e->getMessage());
             return redirect()->back();
 		}
-		
-		
+
+
 	}
 
 	public function delete($id){
@@ -63,30 +63,43 @@ class AdminGeradorController extends Controller
 
 			\App\Gerador::deletar($id);
 
-			unlink('../app/Http/Controllers/Admin'.$modulo->nome.'Controller.php');
-			unlink('../app/Http/Controllers/'.$modulo->nome.'Controller.php');
-			unlink('../app/'.$modulo->nome.'.php');
-			unlink('../resources/views/admin/'.$modulo->rota.'.blade.php');
-			if($modulo->id_tipo_modulo == 1){
-				unlink('../resources/views/admin/form-'.$modulo->rota.'.blade.php');
+			/* Apaga a pasta do módulo recursivamente */
+			$this->rrmdir('../app/Modules/'.$modulo->nome);
+
+			$this->rrmdir('../public/uploads/'.$modulo->rota);
+
+			/* Remove do config/module.php */
+			$modules = config("module.modules");
+			$str = "<?php
+			# config/module.php
+			return  [
+			    'modules' => [
+			";
+			while (list(,$module) = each($modules)) {
+				if($module != $modulo->nome){
+					$str .= "'$module',
+					";
+				}
 			}
-			unlink('../resources/views/admin/form-'.$modulo->rota.'-imagem.blade.php');
-			unlink('../resources/views/'.$modulo->rota.'.blade.php');
+			$str .= "
+				]
+			];";
+			file_put_contents('../config/module.php',$str);
 
 			\App\CampoModulo::where('id_modulo',$modulo->id)->delete();
 			DB::statement('DROP TABLE '.$modulo->nome_tabela);
 			DB::statement('DROP TABLE '.$modulo->nome_tabela.'_imagens');
 
 			\Session::flash('type', 'success');
-            \Session::flash('message', "Registro removido com sucesso!");
+         \Session::flash('message', "Registro removido com sucesso!");
 			return redirect('admin/gerador');
 		}catch(Exception $e){
 			\Session::flash('type', 'error');
             \Session::flash('message', "Nao foi possível remover o registro!");
             return redirect()->back();
 		}
-		
-		
+
+
 	}
 
 	private function generateFiles($modulo){
@@ -94,39 +107,72 @@ class AdminGeradorController extends Controller
 		$replaces = array('<NOME_MODULO>','<ID_MODULO>','<ROTA_MODULO>','<ITEM_MODULO>','<ITEMS_MODULO>','<NOME_TABELA>','<LABEL_MODULO>');
 		$by = array($modulo->nome,$modulo->id,$modulo->rota,$modulo->item_modulo,$modulo->items_modulo,$modulo->nome_tabela,$modulo->label);
 
+		if(file_exists('../app/Modules/'.$modulo->nome)){
+			die('Ja existe um módulo com esse nome, seu idiota !');
+		}
+
+		/* Cria as pastas */
+		mkdir('../app/Modules/'.$modulo->nome, 0777, true);
+		mkdir('../app/Modules/'.$modulo->nome.'/Views', 0777, true);
+		mkdir('../app/Modules/'.$modulo->nome.'/Views/admin', 0777, true);
+		mkdir('../app/Modules/'.$modulo->nome.'/Models', 0777, true);
+		mkdir('../app/Modules/'.$modulo->nome.'/Controllers', 0777, true);
+		mkdir('../app/Modules/'.$modulo->nome.'/Controllers/Admin', 0777, true);
+
 		/* Gera o Controller */
 		$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/".$tipo_modulo->controller_admin));
-		file_put_contents('../app/Http/Controllers/Admin'.$modulo->nome.'Controller.php',$text);
+		file_put_contents('../app/Modules/'.$modulo->nome.'/Controllers/Admin/Admin'.$modulo->nome.'Controller.php',$text);
 
 		/* Gera o Controller do Site */
 		$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/controller_basico.php"));
-		file_put_contents('../app/Http/Controllers/'.$modulo->nome.'Controller.php',$text);
+		file_put_contents('../app/Modules/'.$modulo->nome.'/Controllers/'.$modulo->nome.'Controller.php',$text);
 
 		/* Gera o Model */
 		$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/".$tipo_modulo->model));
-		file_put_contents('../app/'.$modulo->nome.'.php',$text);
+		file_put_contents('../app/Modules/'.$modulo->nome.'/Models/'.$modulo->nome.'.php',$text);
 
 		/* Gera a View Index */
 		$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/".$tipo_modulo->view_admin_index));
-		file_put_contents('../resources/views/admin/'.$modulo->rota.'.blade.php',$text);
+		file_put_contents('../app/Modules/'.$modulo->nome.'/Views/admin/'.$modulo->rota.'.blade.php',$text);
 
 		if($tipo_modulo->id == 1){ // Com Detalhe
 			/* Gera a View Form */
 			$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/".$tipo_modulo->view_admin_form));
-			file_put_contents('../resources/views/admin/form-'.$modulo->rota.'.blade.php',$text);
+			file_put_contents('../app/Modules/'.$modulo->nome.'/Views/admin/form-'.$modulo->rota.'.blade.php',$text);
 		}
-		
+
 
 		/* Gera a view Galeria */
 		$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/view_form_galeria.php"));
-		file_put_contents('../resources/views/admin/form-'.$modulo->rota.'-imagem.blade.php',$text);
+		file_put_contents('../app/Modules/'.$modulo->nome.'/Views/admin/form-'.$modulo->rota.'-imagem.blade.php',$text);
 
 		/* Gera a view index do site */
-		file_put_contents('../resources/views/'.$modulo->rota.'.blade.php','');
+		file_put_contents('../app/Modules/'.$modulo->nome.'/Views/'.$modulo->rota.'.blade.php','');
 
 		/* Gera as rotas */
 		$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/".$tipo_modulo->rotas));
-		file_put_contents('../app/Http/routes.php',$text, FILE_APPEND);
+		file_put_contents('../app/Modules/'.$modulo->nome.'/routes.php',$text);
+
+		/* Adiciona o módulo ao config/module.php */
+		$modules = config("module.modules");
+
+		$str = "<?php
+		# config/module.php
+
+		return  [
+		    'modules' => [
+		";
+		while (list(,$module) = each($modules)) {
+			$str .= "'$module',
+			";
+		}
+		$str .= "'$modulo->nome'
+		";
+		$str .= "
+			]
+		];";
+
+		file_put_contents('../config/module.php',$str);
 
 		return true;
 	}
@@ -134,7 +180,7 @@ class AdminGeradorController extends Controller
 	private function createTable($input, $modulo){
 		$sqlColumns = '( id INT NOT NULL AUTO_INCREMENT, thumbnail_principal VARCHAR(255) DEFAULT NULL';
 		if($modulo->id_tipo_modulo == 1){
-			$sqlColumns .= ', meta_keywords TEXT DEFAULT NULL, meta_descricao TEXT DEFAULT NULL';
+			$sqlColumns .= ', meta_keywords TEXT DEFAULT NULL, meta_descricao TEXT DEFAULT NULL, slug VARCHAR(255) NOT NULL';
 		}
 		foreach ($input['campo-nome'] as $key => $nome_campo) {
 			$sqlColumns .= ', ';
@@ -157,6 +203,10 @@ class AdminGeradorController extends Controller
 					break;
 				case 'DT':
 					$tipo = 'DATETIME';
+					$valor_tipo = '';
+					break;
+				case 'S':
+					$tipo = 'TINYINT';
 					$valor_tipo = '';
 					break;
 			}
@@ -216,6 +266,10 @@ class AdminGeradorController extends Controller
 						$tipo = 'DATETIME';
 						$valor_tipo = '';
 						break;
+					case 'S':
+						$tipo = 'TINYINT';
+						$valor_tipo = '';
+						break;
 				}
 				DB::statement('ALTER TABLE '.$modulo->nome_tabela.' CHANGE COLUMN '.$input['old-campo-nome'][$key].' '.$nome_campo.' '.$tipo.' '.$valor_tipo.' DEFAULT NULL');
 
@@ -261,7 +315,7 @@ class AdminGeradorController extends Controller
 						break;
 				}
 				DB::statement('ALTER TABLE '.$modulo->nome_tabela.' ADD '.$nome_campo.' '.$tipo.' '.$valor_tipo.' DEFAULT NULL');
-				
+
 				$campoInfo = array(
 					'nome' => $nome_campo,
 					'valor_padrao' => $input['campo-valor-padrao'][$key],
@@ -275,10 +329,25 @@ class AdminGeradorController extends Controller
 				\App\CampoModulo::criar($campoInfo);
 			}
 		}
-		
+
 
 		return true;
-		
+
+	}
+
+	public function rrmdir($dir) {
+	  if (is_dir($dir)) {
+		 $objects = scandir($dir);
+		 foreach ($objects as $object) {
+			if ($object != "." && $object != "..") {
+			  if (is_dir($dir."/".$object))
+				 $this->rrmdir($dir."/".$object);
+			  else
+				 unlink($dir."/".$object);
+			}
+		 }
+		 rmdir($dir);
+	  }
 	}
 
 }

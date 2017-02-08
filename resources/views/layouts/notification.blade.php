@@ -18,7 +18,7 @@
 
   <div class="navbar-custom-menu">
     <ul class="nav navbar-nav">
-     
+
       <!-- Notifications: style can be found in dropdown.less -->
       <li class="dropdown notifications-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -45,7 +45,7 @@
           <li class="footer"><a href="#">View all</a></li>
         </ul>
       </li>
-      
+
       <!-- User Account: style can be found in dropdown.less -->
       <li class="dropdown user user-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -62,7 +62,7 @@
               <small>Member since <?php echo date('M',strtotime(Auth::user()->created_at)); ?>. <?php echo date('Y',strtotime(Auth::user()->created_at)); ?></small>
             </p>
           </li>
-          
+
           <!-- Menu Footer-->
           <li class="user-footer">
             <div class="pull-left">

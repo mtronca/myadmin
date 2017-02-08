@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Modules\<NOME_MODULO>\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Mail;
 use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use App\Modules\<NOME_MODULO>\Models\<NOME_MODULO>;
 
 class Admin<NOME_MODULO>Controller extends Controller
 {
@@ -15,34 +17,36 @@ class Admin<NOME_MODULO>Controller extends Controller
 		$this->middleware('auth');
 		$this->modulo = \App\Gerador::find(<ID_MODULO>);
 		$this->fields = \App\CampoModulo::where('id_modulo',<ID_MODULO>)->orderBy('ordem','ASC')->get();
+		$this-><ROTA_MODULO>_m = new <NOME_MODULO>();
 	}
 
 	public function index(){
-		$data['<ITEMS_MODULO>'] = \App\<NOME_MODULO>::get();
+		$data['<ITEMS_MODULO>'] = $this-><ROTA_MODULO>_m->get();
 		$data['fields_listagem'] = array();
 		foreach ($this->fields as $field) {
 			if($field->listagem){
 				$data['fields_listagem'][] = $field;
 			}
 		}
-		return view('admin/<ROTA_MODULO>',$data);
+		return view('<NOME_MODULO>::admin/<ROTA_MODULO>',$data);
 	}
 
 	public function add(){
 		$data = array();
 		$data['modulo'] = $this->modulo;
 		$data['fields'] = $this->fields;
-		return view('admin/form-<ROTA_MODULO>', $data);
+		$data['nextId'] = $this-><ROTA_MODULO>_m->getLastInsertId() + 1;
+		return view('<NOME_MODULO>::admin/form-<ROTA_MODULO>', $data);
 	}
 
 	public function edit($id){
 		$data['modulo'] = $this->modulo;
 		$data['fields'] = $this->fields;
-		$data['<ITEM_MODULO>'] = \App\<NOME_MODULO>::find($id);
+		$data['<ITEM_MODULO>'] = $this-><ROTA_MODULO>_m->find($id);
 		if($this->modulo->galeria){
-			$data['<ITEM_MODULO>']->imagens = \App\<NOME_MODULO>::getImagens($id);
+			$data['<ITEM_MODULO>']->imagens = $this-><ROTA_MODULO>_m->getImagens($id);
 		}
-		return view('admin/form-<ROTA_MODULO>',$data);
+		return view('<NOME_MODULO>::admin/form-<ROTA_MODULO>',$data);
 	}
 
 
@@ -52,7 +56,7 @@ class Admin<NOME_MODULO>Controller extends Controller
 			$post = $request->input();
 
 			$post['meta_keywords'] = (isset($post['taggles'])) ? implode(',',$post['taggles']) : null;
-			
+
 			foreach ($this->fields as $field) {
 				$arrayFields[] = $field->nome;
 			}
@@ -61,25 +65,26 @@ class Admin<NOME_MODULO>Controller extends Controller
 			}
 			$arrayFields[] = 'meta_descricao';
 			$arrayFields[] = 'meta_keywords';
+			$arrayFields[] = 'slug';
 			//$post['slug'] = $this->slugify($post['titulo']);
 			if($request->input('id')){
-				\App\<NOME_MODULO>::editar($arrayFields, $post, $request->input('id'));
+				$this-><ROTA_MODULO>_m->editar($arrayFields, $post, $request->input('id'));
 			}else{
-				\App\<NOME_MODULO>::criar($arrayFields, $post);
+				$this-><ROTA_MODULO>_m->criar($arrayFields, $post);
 			}
 			\Session::flash('type', 'success');
-            \Session::flash('message', "Alteracoes salvas com sucesso!");
+         \Session::flash('message', "Alteracoes salvas com sucesso!");
 			return redirect('admin/<ROTA_MODULO>');
 		}catch(Exception $e){
 			\Session::flash('type', 'error');
-            \Session::flash('message', $e->getMessage());
-            return redirect()->back();
+         \Session::flash('message', $e->getMessage());
+         return redirect()->back();
 		}
-		
-		
+
+
 	}
 
-	
+
 
 	public function upload_image(Request $request) {
 		if($request->hasFile('file')) {
@@ -89,6 +94,23 @@ class Admin<NOME_MODULO>Controller extends Controller
 			$tmpFileName = time() . '-' . $file->getClientOriginalName();
 			$file = $file->move(public_path() . $tmpFilePath, $tmpFileName);
 			$path = $tmpFilePath . $tmpFileName;
+			return response()->json(array('path'=> $path, 'file_name'=>$tmpFileName), 200);
+		} else {
+			return response()->json(false, 200);
+		}
+	}
+
+	public function upload_galeria($id, Request $request) {
+		if($request->hasFile('file')) {
+			//upload an image to the /img/tmp directory and return the filepath.
+			$file = $request->file('file');
+			$tmpFilePath = '/uploads/<ROTA_MODULO>/';
+			$tmpFileName = time() . '-' . $file->getClientOriginalName();
+			$file = $file->move(public_path() . $tmpFilePath, $tmpFileName);
+			$path = $tmpFilePath . $tmpFileName;
+
+			$this-><ROTA_MODULO>_m->criar_imagem(array('id_<ITEM_MODULO>' => $id, 'thumbnail_principal' => $tmpFileName));
+
 			return response()->json(array('path'=> $path, 'file_name'=>$tmpFileName), 200);
 		} else {
 			return response()->json(false, 200);
@@ -116,7 +138,7 @@ class Admin<NOME_MODULO>Controller extends Controller
 
 	public function delete($id){
 		try{
-			\App\<NOME_MODULO>::deletar($id);
+			$this-><ROTA_MODULO>_m->deletar($id);
 
 			\Session::flash('type', 'success');
             \Session::flash('message', "Registro removido com sucesso!");
@@ -126,55 +148,23 @@ class Admin<NOME_MODULO>Controller extends Controller
             \Session::flash('message', "Nao foi possivel remover o registro!");
             return redirect()->back();
 		}
-		
-		
+
+
 	}
 
-	public function add_imagem($id){
-		$data['<ITEM_MODULO>'] = \App\<NOME_MODULO>::find($id);
-		return view('admin/form-<ROTA_MODULO>-imagem', $data);
-	}
-
-	public function edit_imagem($id){
-		$data['imagem'] = \App\<NOME_MODULO>::getImagem($id);
-		$item = $data['imagem'];
-		$data['<ITEM_MODULO>'] = \App\<NOME_MODULO>::find($item->id_<ITEM_MODULO>);
-		return view('admin/form-<ROTA_MODULO>-imagem',$data);
-	}
-	public function save_imagem(Request $request){
-		try{
-			$post = $request->input();
-			if($request->input('id')){
-				\App\<NOME_MODULO>::editar_imagem($post, $request->input('id'));
-			}else{
-				\App\<NOME_MODULO>::criar_imagem($post);
-			}
-			\Session::flash('type', 'success');
-            \Session::flash('message', "Alteracoes salvas com sucesso!");
-			return redirect('admin/<ROTA_MODULO>/edit/'.$post['id_<ITEM_MODULO>']);
-		}catch(Exception $e){
-			\Session::flash('type', 'error');
-            \Session::flash('message', $e->getMessage());
-            return redirect()->back();
-		}
-		
-		
-	}
 	public function delete_imagem($id){
 		try{
-			$imagem = \App\<NOME_MODULO>::getImagem($id);
-			\App\<NOME_MODULO>::deletar_imagem($id);
+			$imagem = $this-><ROTA_MODULO>_m->getImagem($id);
+			$this-><ROTA_MODULO>_m->deletar_imagem($id);
 
-			\Session::flash('type', 'success');
-            \Session::flash('message', "Registro removido com sucesso!");
-			return redirect('admin/<ROTA_MODULO>/edit/'.$imagem->id_<ITEM_MODULO>);
+			unlink('uploads/<ROTA_MODULO>/'.$imagem->thumbnail_principal);
+
+			return response()->json(array('status' => true, 'message' => 'Registro removido com sucesso!'));
 		}catch(Exception $e){
-			\Session::flash('type', 'error');
-            \Session::flash('message', "Nao foi possível remover o registro!");
-            return redirect()->back();
+			return response()->json(array('status' => false, 'message' => $e->getMessage()));
 		}
-		
-		
+
+
 	}
 
 	private function slugify($string)

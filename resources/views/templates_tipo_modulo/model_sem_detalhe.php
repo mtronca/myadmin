@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Modules\<NOME_MODULO>\Models;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +9,7 @@ class <NOME_MODULO> extends Model
 {
 	protected $table = '<NOME_TABELA>';
 
-    public static function editar($fields, $input, $id){
+    public function editar($fields, $input, $id){
 		$insert = [];
 		foreach ($fields as $field) {
 			$insert[$field] = $input[$field];
@@ -21,14 +21,14 @@ class <NOME_MODULO> extends Model
 		return 1;
 	}
 
-	public static function getImagem($id){
+	public function getImagem($id){
 		return DB::table('<NOME_TABELA>_imagens')->find($id);
 	}
 
-	public static function getImagens($id){
+	public function getImagens($id){
 		return DB::table('<NOME_TABELA>_imagens')->where('id_<ITEM_MODULO>', $id)->get();
 	}
-	public static function criar_imagem($input){
+	public function criar_imagem($input){
 		return DB::table('<NOME_TABELA>_imagens')->insert([
 			[
 				'id_<ITEM_MODULO>' => $input['id_<ITEM_MODULO>'],
@@ -36,14 +36,14 @@ class <NOME_MODULO> extends Model
 			]
 		]);
 	}
-	public static function editar_imagem($input, $id){
+	public function editar_imagem($input, $id){
 		return DB::table('<NOME_TABELA>_imagens')->where('id', $id)
 		->update([
 			'id_<ITEM_MODULO>' => $input['id_<ITEM_MODULO>'],
 			'thumbnail_principal' => $input['thumbnail_principal'],
 		]);;
 	}
-	public static function deletar_imagem($id){
+	public function deletar_imagem($id){
 		return DB::table('<NOME_TABELA>_imagens')
 				->where('id', $id)
 				->delete();

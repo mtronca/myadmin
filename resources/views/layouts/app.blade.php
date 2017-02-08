@@ -10,8 +10,8 @@
     <base href="{{ url('') }}/"/>
 
     <!-- Fonts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
+    <link rel="stylesheet" href="{{ url('fonts/admin/fontawesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url('fonts/admin/font_lato.css') }}">
 
     <!-- Styles -->
 
@@ -19,13 +19,13 @@
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
     <!-- Taggle JS -->
     <link rel="stylesheet" href="{{ url('plugins/taggle/example/css/taggle.css') }}">
+	 <!-- Dropzone Galeria -->
+    <link rel="stylesheet" href="{{ url('css/admin/dropzone-galeria.css') }}">
     <link rel="stylesheet" href="{{ url('css/admin/cropper.min.css') }}">
     <!-- Bootstrap 3.3.6 -->
     <link rel="stylesheet" href="{{ url('css/admin/bootstrap.min.css') }}">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{{ url('fonts/admin/ionicons.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ url('css/admin/AdminLTE.min.css') }}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -35,13 +35,13 @@
 
     <script type="text/javascript" src="{{ url('js/admin/cropper.min.js') }}"></script>
     <script type="text/javascript" src="{{ url('js/admin/dropzone.js') }}"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="{{ url('js/admin/jquery-3.1.0.min.js') }}"></script>
     <!-- Pickadate.JS -->
     <link rel="stylesheet" href="{{ url('plugins/pickadate/lib/themes/default.css') }}">
     <link rel="stylesheet" href="{{ url('plugins/pickadate/lib/themes/default.date.css') }}">
     <script src="{{ url('plugins/pickadate/lib/picker.js') }}"></script>
     <script src="{{ url('plugins/pickadate/lib/picker.date.js') }}"></script>
-  
+
     <!-- Taggles JS -->
     <script src="{{ url('plugins/taggle/src/taggle.js') }}"></script>
 
@@ -72,9 +72,9 @@
         <span></span>
       </div>
       <a href="#" class="fecha-alerta"><i class="fa fa-times"></i></a>
-    </div>    
+    </div>
   @endif
-  
+
   @yield('content')
 
   <footer class="main-footer">
@@ -96,6 +96,10 @@
 
 <!-- jQuery 2.2.3 -->
 <script src="{{ url('plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
+<!-- alertUtil.js -->
+<script src="{{ url('js/admin/alertUtil.js') }}"></script>
+<!-- Slugify -->
+<script src="{{ url('js/admin/jquery.slugify.js') }}"></script>
 <!-- TinyMCE -->
 <script src="{{ url('plugins/tinymce/tinymce.min.js') }}"></script>
 <!-- Bootstrap 3.3.6 -->
