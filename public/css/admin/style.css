@@ -265,3 +265,11 @@
 .taggle_input{
 	border: 1px solid #e1e1e1;
 }
+
+.icone-viewer{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	width:20%;
+	min-height: 60px;
+}

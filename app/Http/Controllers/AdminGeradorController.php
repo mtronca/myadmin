@@ -142,9 +142,10 @@ class AdminGeradorController extends Controller
 		}
 
 
-		/* Gera a view Galeria */
+		/* Gera a view Galeria
 		$text = str_replace($replaces,$by,file_get_contents("../resources/views/templates_tipo_modulo/view_form_galeria.php"));
 		file_put_contents('../app/Modules/'.$modulo->nome.'/Views/admin/form-'.$modulo->rota.'-imagem.blade.php',$text);
+		*/
 
 		/* Gera a view index do site */
 		file_put_contents('../app/Modules/'.$modulo->nome.'/Views/'.$modulo->rota.'.blade.php','');
@@ -209,6 +210,10 @@ class AdminGeradorController extends Controller
 					$tipo = 'TINYINT';
 					$valor_tipo = '';
 					break;
+				case 'SI':
+					$tipo = 'VARCHAR';
+					$valor_tipo = '(255)';
+					break;
 			}
 			$sqlColumns .= $nome_campo.' '.$tipo.' '.$valor_tipo.' DEFAULT NULL';
 
@@ -269,6 +274,10 @@ class AdminGeradorController extends Controller
 					case 'S':
 						$tipo = 'TINYINT';
 						$valor_tipo = '';
+						break;
+					case 'SI':
+						$tipo = 'VARCHAR';
+						$valor_tipo = '(255)';
 						break;
 				}
 				DB::statement('ALTER TABLE '.$modulo->nome_tabela.' CHANGE COLUMN '.$input['old-campo-nome'][$key].' '.$nome_campo.' '.$tipo.' '.$valor_tipo.' DEFAULT NULL');

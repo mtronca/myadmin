@@ -279,4 +279,11 @@ $(document).ready(function(){
 
   });
 
+  $('.select2').select2();
+
+  $('.select-icone').change(function(){
+	  $('.icone-viewer i').attr('class','');
+	  $('.icone-viewer i').attr('class', 'fa fa-3x '+$(this).val());
+  });if($('.select-icone') !== undefined) $('.select-icone').trigger('change');
+
 });

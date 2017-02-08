@@ -50,30 +50,52 @@
 										<?php $campo = $field->nome; ?>
 										<div class="form-group">
 											<label for="<?php echo $field->nome; ?>" class="col-md-3 control-label"><?php echo $field->label; ?> <?php echo ($field->required) ? '*' : ''; ?></label>
-
-											<div class="col-md-7">
-												<?php if($field->tipo_campo == 'I'){ ?>
+											<?php if($field->tipo_campo == 'I'){ ?>
+												<div class="col-md-7">
 													<input id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> type="text" class="form-control" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : $field->valor_padrao; ?>" name="<?php echo $field->nome; ?>" />
-												<?php } ?>
-												<?php if($field->tipo_campo == 'N'){ ?>
+												</div>
+											<?php } ?>
+											<?php if($field->tipo_campo == 'N'){ ?>
+												<div class="col-md-7">
 													<input id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> type="number" class="form-control" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : $field->valor_padrao; ?>" name="<?php echo $field->nome; ?>" />
-												<?php } ?>
-												<?php if($field->tipo_campo == 'T'){ ?>
+												</div>
+											<?php } ?>
+											<?php if($field->tipo_campo == 'T'){ ?>
+												<div class="col-md-7">
 													<textarea id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> class="form-control tinymce" name="<?php echo $field->nome; ?>"><?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : $field->valor_padrao; ?></textarea>
-												<?php } ?>
-												<?php if($field->tipo_campo == 'D'){ ?>
+												</div>
+											<?php } ?>
+											<?php if($field->tipo_campo == 'D'){ ?>
+												<div class="col-md-7">
 													<input id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> type="date" class="form-control" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : $field->valor_padrao; ?>" name="<?php echo $field->nome; ?>" />
-												<?php } ?>
-												<?php if($field->tipo_campo == 'DT'){ ?>
+												</div>
+											<?php } ?>
+											<?php if($field->tipo_campo == 'DT'){ ?>
+												<div class="col-md-7">
 													<input id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> type="datetime" class="form-control" value="<?php echo (isset($<ITEM_MODULO>)) ? $<ITEM_MODULO>->$campo : $field->valor_padrao; ?>" name="<?php echo $field->nome; ?>" />
-												<?php } ?>
-												<?php if($field->tipo_campo == 'S'){ ?>
+												</div>
+											<?php } ?>
+											<?php if($field->tipo_campo == 'S'){ ?>
+												<div class="col-md-7">
 													<select id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> class="form-control" name="<?php echo $field->nome; ?>">
 														<option <?php echo (isset($<ITEM_MODULO>) && $<ITEM_MODULO>->$campo == 1) ? 'selected' : ''; ?> value="1">Sim</option>
 														<option <?php echo (isset($<ITEM_MODULO>) && $<ITEM_MODULO>->$campo == 0) ? 'selected' : ''; ?> value="0">Não</option>
 													</select>
-												<?php } ?>
-											</div>
+												</div>
+											<?php } ?>
+											<?php if($field->tipo_campo == 'SI'){ ?>
+												<div class="col-md-5">
+													<?php $icons = explode(',',file_get_contents('fonts/icons-font-awesome.txt')); ?>
+													<select id="<?php echo $field->nome; ?>" <?php echo ($field->required) ? 'required' : ''; ?> class="form-control select2 select-icone" name="<?php echo $field->nome; ?>">
+														<?php foreach ($icons as $icone): ?>
+															<option <?php echo (isset($<ITEM_MODULO>) && $icone == $<ITEM_MODULO>->$campo) ? 'selected' : ''; ?> value="<?php echo $icone; ?>"><?php echo $icone; ?></option>
+														<?php endforeach; ?>
+													</select>
+												</div>
+												<div class="icone-viewer">
+													<i class="fa fa-3x"></i>
+												</div>
+											<?php } ?>
 										</div>
 									<?php } ?>
 								</div>

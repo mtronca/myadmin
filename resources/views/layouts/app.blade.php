@@ -19,6 +19,8 @@
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
     <!-- Taggle JS -->
     <link rel="stylesheet" href="{{ url('plugins/taggle/example/css/taggle.css') }}">
+	 <!-- Select2 -->
+    <link rel="stylesheet" href="{{ url('css/admin/select2.min.css') }}">
 	 <!-- Dropzone Galeria -->
     <link rel="stylesheet" href="{{ url('css/admin/dropzone-galeria.css') }}">
     <link rel="stylesheet" href="{{ url('css/admin/cropper.min.css') }}">
@@ -111,6 +113,8 @@
 <script src="{{ url('plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <!-- FastClick -->
 <script src="{{ url('plugins/fastclick/fastclick.js') }}"></script>
+<!-- Select2 -->
+<script src="{{ url('js/admin/select2.full.min.js') }}"></script>
 <!-- Input-masks -->
 <script src="{{ url('plugins/input-mask/jquery.inputmask.js') }}"></script>
 <script src="{{ url('plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>

@@ -60,6 +60,9 @@
 													case 'DT':
 														$valor = date('d/m/Y H:i:s',strtotime($item->$campo));
 														break;
+													case 'SI':
+														$valor = '<i class="fa '.$item->$campo.'"></i>';
+														break;
 													default:
 														$valor = $item->$campo;
 														break;
