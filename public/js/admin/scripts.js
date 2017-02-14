@@ -120,6 +120,7 @@ $(document).ready(function(){
             $('.dz-file-preview').hide();
           });
           this.on("success", function(file, res) {
+				  $('.dz-preview').remove();
               console.log('upload success...');
               $('#img-thumb').attr('src', res.path);
               $('input[name="pic_url"]').val(res.path);
@@ -133,6 +134,7 @@ $(document).ready(function(){
                 }
               });
               $('#upload-submit').hide();
+
               $('#crop-image').fadeIn();
 
               $('#crop-image').click(function(){

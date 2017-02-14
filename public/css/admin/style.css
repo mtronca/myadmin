@@ -3,8 +3,9 @@
   width:100%;
   padding:15px;
 }
-.dz-preview{
-  display:none!important;
+
+.dz-error-mark svg, .dz-success-mark svg, .dz-details{
+	display:none!important;
 }
 
 .session-return-wrapper{
