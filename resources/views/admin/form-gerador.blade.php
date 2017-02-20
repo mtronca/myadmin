@@ -141,6 +141,7 @@
 	                                                <td>
 	                                                	<select class="form-control" name="edit-campo-tipo-campo[]">
 	                                                		<option <?php echo ($campo->tipo_campo == 'I') ? 'selected' : ''; ?> value="I">Input Text</option>
+																			<option <?php echo ($campo->tipo_campo == 'N') ? 'selected' : ''; ?> value="N">Number</option>
 	                                                		<option <?php echo ($campo->tipo_campo == 'T') ? 'selected' : ''; ?> value="T">Textarea</option>
 	                                                		<option <?php echo ($campo->tipo_campo == 'D') ? 'selected' : ''; ?> value="D">Date</option>
 	                                                		<option <?php echo ($campo->tipo_campo == 'DT') ? 'selected' : ''; ?> value="DT">Datetime</option>
