@@ -5,7 +5,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <?php echo isset($userGroup) ? 'Editar' : 'Adicionar'; ?> 
+        <?php echo isset($userGroup) ? 'Editar' : 'Adicionar'; ?>
         <small>Grupo de Usuario</small>
       </h1>
       <ol class="breadcrumb">
@@ -19,8 +19,8 @@
             <div class="col-lg-12">
                 <div class="box">
                     <div class="box-header">
-                        
-                    </div>   
+
+                    </div>
                     <!-- /.box-header -->
                     <div class="box-body">
                       <form id="mainForm" class="form-horizontal" role="form" method="POST" action="{{ url('/admin/users-groups/save') }}">
@@ -49,11 +49,11 @@
                   </div>
           <!-- /.box -->
             </div>
-            
+
         </div>
     </section>
 </div>
 <script type="text/javascript">
-  
+
 </script>
 @endsection

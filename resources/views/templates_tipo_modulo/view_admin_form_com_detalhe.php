@@ -127,9 +127,14 @@
 											<?php if(isset($<ITEM_MODULO>) && $<ITEM_MODULO>->meta_keywords != ''){ ?>
 												tags: [
 													<?php $tags = explode(',',$<ITEM_MODULO>->meta_keywords); ?>
+
 													<?php foreach($tags as $tag){ ?>
 												    	'<?php echo $tag; ?>',
-												    <?php } ?>
+												   <?php } ?>
+												],
+											<?php }else{ ?>
+												tags: [
+													'<ITEM_MODULO>'
 												],
 											<?php } ?>
 										    duplicateTagClass: 'bounce'

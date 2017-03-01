@@ -42,13 +42,14 @@ class User extends Authenticatable
                 'name' => $input['name'],
                 'password' => bcrypt($input['password']),
                 'id_user_group' => $input['id_user_group'],
+					 'created_at' => date('Y-m-d H:i:s')
             ]
         ]);
 
         $id_user = DB::getPdo()->lastInsertId();
 
 
-        return 1;
+        return $id_user;
     }
 
     public static function editar($input, $id){
@@ -58,15 +59,14 @@ class User extends Authenticatable
             'name' => $input['name'],
             'thumbnail_principal' => $input['thumbnail_principal'],
             'id_user_group' => $input['id_user_group'],
+				'updated_at' => date('Y-m-d H:i:s')
         ];
 
         if($input['password'] != ''){
             $updateArray['password'] = bcrypt($input['password']);
         }
 
-        DB::table('users')->where('id', $id)
+        return DB::table('users')->where('id', $id)
         ->update($updateArray);
-
-        return 1;
     }
 }

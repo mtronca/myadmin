@@ -12,6 +12,7 @@ class Admin<NOME_MODULO>Controller extends Controller
 {
 	private $modulo;
 	private $fields;
+	private $lastInsertId;
 
     public function __construct(){
 		$this->middleware('auth');
@@ -35,7 +36,7 @@ class Admin<NOME_MODULO>Controller extends Controller
 		$data = array();
 		$data['modulo'] = $this->modulo;
 		$data['fields'] = $this->fields;
-		$data['nextId'] = $this-><ROTA_MODULO>_m->getLastInsertId() + 1;
+		$data['nextId'] = $this-><ROTA_MODULO>_m->getNextAutoIncrement();
 		return view('<NOME_MODULO>::admin/form-<ROTA_MODULO>', $data);
 	}
 

@@ -8,10 +8,10 @@
 	<section class="content-header">
 		<h1>
 			<LABEL_MODULO>
-			<small>listagem</small>
+			<small>Listagem</small>
 		</h1>
 		<ol class="breadcrumb">
-			<li><a href="{{ url('admin') }}"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="{{ url('admin') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
 			<li class="active"><LABEL_MODULO></li>
 		</ol>
 	</section>

@@ -9,8 +9,6 @@ class <NOME_MODULO> extends Model
 {
 	protected $table = '<NOME_TABELA>';
 
-	protected $lastInsertId = 0;
-
 	public function getBySlug($slug){
 		return DB::table($this->table)->where('slug',$slug)->firstOrFail();
 	}
@@ -21,14 +19,11 @@ class <NOME_MODULO> extends Model
 			$insert[$field] = $input[$field];
 		}
 
-		DB::table($this->table)->insert([
+		$id_<ITEM_MODULO> = DB::table($this->table)->insertGetId(
 			$insert
-		]);
+		);
 
-		$id_<ITEM_MODULO> = DB::getPdo()->lastInsertId();
-
-
-		return 1;
+		return $id_<ITEM_MODULO>;
 	}
 
     public function editar($fields, $input, $id){
@@ -71,7 +66,8 @@ class <NOME_MODULO> extends Model
 				->delete();
 	}
 
-	public function getLastInsertId(){
-		return $this->lastInsertId;
+	public function getNextAutoIncrement(){
+		$lastId = DB::select("SELECT AUTO_INCREMENT FROM information_schema.tables WHERE TABLE_NAME = '$this->table' ORDER BY table_name;")[0]->AUTO_INCREMENT;
+		return $lastId;
 	}
 }
