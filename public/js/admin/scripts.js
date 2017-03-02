@@ -120,7 +120,7 @@ $(document).ready(function(){
             $('.dz-file-preview').hide();
           });
           this.on("success", function(file, res) {
-				  $('.dz-preview').remove();
+				  //$('.dz-preview').remove();
               console.log('upload success...');
               $('#img-thumb').attr('src', res.path);
               $('input[name="pic_url"]').val(res.path);

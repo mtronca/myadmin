@@ -4,6 +4,10 @@
   padding:15px;
 }
 
+#image-tab .dz-preview{
+	display:none;
+}
+
 .dz-error-mark svg, .dz-success-mark svg, .dz-details{
 	display:none!important;
 }

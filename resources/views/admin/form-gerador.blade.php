@@ -42,6 +42,18 @@
 									</div>
 								</div>
 								<div class="form-group">
+									<label for="item_modulo" class="col-md-3 control-label">Item do Módulo</label>
+									<div class="col-md-7">
+										<input id="item_modulo" type="text" <?php echo (isset($modulo)) ? 'readonly' : ''; ?> class="form-control" value="<?php echo (isset($modulo)) ? $modulo->item_modulo : ''; ?>" name="item_modulo" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="items_modulo" class="col-md-3 control-label">Itens do Módulo</label>
+									<div class="col-md-7">
+										<input id="items_modulo" type="text" <?php echo (isset($modulo)) ? 'readonly' : ''; ?> class="form-control" value="<?php echo (isset($modulo)) ? $modulo->items_modulo : ''; ?>" name="items_modulo" />
+									</div>
+								</div>
+								<div class="form-group">
 									<label for="name" class="col-md-3 control-label">Nome</label>
 									<div class="col-md-7">
 										<input id="nome" type="text" <?php echo (isset($modulo)) ? 'readonly' : ''; ?> class="form-control" value="<?php echo (isset($modulo)) ? $modulo->nome : ''; ?>" name="nome" />
@@ -53,19 +65,7 @@
 										<input id="rota" type="text" <?php echo (isset($modulo)) ? 'readonly' : ''; ?> class="form-control" value="<?php echo (isset($modulo)) ? $modulo->rota : ''; ?>" name="rota" />
 									</div>
 								</div>
-								<div class="form-group">
-									<label for="item_modulo" class="col-md-3 control-label">Item do Módulo</label>
-									<div class="col-md-7">
-										<input id="item_modulo" type="text" <?php echo (isset($modulo)) ? 'readonly' : ''; ?> class="form-control" value="<?php echo (isset($modulo)) ? $modulo->item_modulo : ''; ?>" name="item_modulo" />
-									</div>
-								</div>
 
-								<div class="form-group">
-									<label for="items_modulo" class="col-md-3 control-label">Itens do Módulo</label>
-									<div class="col-md-7">
-										<input id="items_modulo" type="text" <?php echo (isset($modulo)) ? 'readonly' : ''; ?> class="form-control" value="<?php echo (isset($modulo)) ? $modulo->items_modulo : ''; ?>" name="items_modulo" />
-									</div>
-								</div>
 								<div class="form-group">
 									<label for="nome_tabela" class="col-md-3 control-label">Nome da tabela</label>
 									<div class="col-md-7">
